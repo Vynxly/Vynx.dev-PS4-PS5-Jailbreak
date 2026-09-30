@@ -35,6 +35,7 @@ On the first website visit, the logo click runs the **installer**, then opens Pa
 
 ## If you get stuck
 
+- If it's frozen on 'checking AIO groups', restart your console and try again.
 - If the page says your firmware is unsupported, this release does not support your exact PS5 version.
 - If the jailbreak fails or the browser closes, restart the PS5 and try again.
 - If installation stops while caching, keep the page or PC host open and retry the install.
