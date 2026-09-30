@@ -4,6 +4,15 @@
 > 
 Install the PS5 app once. After that, open **Vynx.dev Autoloader** from your PS5 homescreen whenever you want to run the jailbreak. The app starts it automatically.
 
+## Compatible PS5 firmware
+
+This release supports these PS5 firmware versions:
+
+- **1.00–5.50:** 1.00, 1.01, 1.02, 1.05, 1.10–1.14, 2.00, 2.20, 2.25, 2.26, 2.30, 2.50, 2.70, 3.00, 3.10, 3.20, 3.21, 4.00, 4.02, 4.03, 4.50, 4.51, 5.00, 5.02, 5.10, and 5.50.
+- **7.00–13.60:** 7.00, 7.01, 7.20, 7.40, 7.60, 7.61, 8.00, 8.20, 8.40, 8.60, 9.00, 9.05, 9.20, 9.40, 9.60, 10.00, 10.01, 10.20, 10.40, 10.60, 11.00, 11.20, 11.40, 11.60, 12.00, 12.02, 12.20, 12.40, 12.60, 12.70, 13.00, 13.20, 13.40, 13.42, and 13.60.
+
+Firmware **6.xx** and versions not listed above are not supported by this release.
+
 ## Install the app
 
 Choose **one** of these methods. Both install the same app.
