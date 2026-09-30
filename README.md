@@ -11,6 +11,8 @@ Install the PS5 app once. After that, open **Vynx.dev Autoloader** from your PS5
 
 Firmware **6.xx** and versions not listed above are not supported by this release.
 
+**Network requirement:** The Autoloader works without internet after installation, but the PS5 must stay connected to Wi-Fi or Ethernet so it has a local network address. This is required for the Relapse jailbreak on firmwares  7.00 - 13.60. You can disconnect your router from the internet while keeping the local network active.
+
 ## Install the app
 
 Choose **one** of these methods. Both install the same app.
