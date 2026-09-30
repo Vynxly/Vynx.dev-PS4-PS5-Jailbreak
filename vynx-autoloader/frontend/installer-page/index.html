@@ -487,7 +487,7 @@
         statusEl.textContent = 'Installed successfully';
         statusEl.style.color = '#22c55e';
         progressBar.style.background = '-webkit-linear-gradient(90deg, #16a34a 0%, #22c55e 100%)';
-        detailEl.textContent = 'The Vynx.dev Autoloader shortcut is now on your PS5 homescreen. You can close this page.';
+        detailEl.textContent = 'Opening Payload Manager...';
         setProgress(100);
       }
 
@@ -549,6 +549,11 @@
           if (xhr.readyState === 4) {
             if (xhr.status === 200) {
               setInstalled();
+              /* The full app was cached before /install was requested. The
+                 installer server can now stop while this AppCache navigation
+                 opens the local launcher, which starts the same bundled
+                 autoloader payload as the homescreen shortcut. */
+              setTimeout(goToAutoloader, 1200);
             } else {
               setFailed();
             }

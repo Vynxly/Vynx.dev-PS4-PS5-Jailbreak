@@ -1,5 +1,7 @@
 # Vynx.dev Autoloader v2.0
 
+> **PS4 users:** The Vynx jailbreak website still supports PS4 and can be accessed by going to http://vynx.dev/JB on the PS4 internet browser. This Autoloader download and homescreen app are for PS5 only.
+> 
 Install the PS5 app once. After that, open **Vynx.dev Autoloader** from your PS5 homescreen whenever you want to run the jailbreak. The app starts it automatically.
 
 ## Install the app
@@ -8,10 +10,10 @@ Choose **one** of these methods. Both install the same app.
 
 ### From vynx.dev
 
-1. On your PS5, open [vynx.dev/JB](https://vynx.dev/JB/).
+1. On your PS5, open [http://vynx.dev/JB](http://vynx.dev/JB/).
 2. Click the large Vynx logo **once** to start the jailbreak and installer.
-3. Keep the page open while it installs. Wait for **Installed successfully**.
-4. Close the page and restart your PS5. **Vynx.dev Autoloader** should now be on your homescreen.
+3. Keep the page open while it installs. After **Installed successfully**, Payload Manager opens automatically.
+4. **Vynx.dev Autoloader** is also added to your PS5 homescreen for later use.
 
 ### From your own Windows PC
 
@@ -20,16 +22,16 @@ You can use the PC host included in the release ZIP. You do not need to visit vy
 1. Extract the ZIP on your PC. Install [Python 3.10 or newer](https://www.python.org/downloads/) if you do not have it.
 2. Right-click **.START-HOST.bat**, choose **Run as administrator**, and leave its window open. Note the PC's IP address shown there.
 3. On your PS5, open **Settings → Network → Settings → Set Up Internet Connection**. Select your connection, open **Advanced Settings**, and change **DNS Settings** to **Manual**. Put the PC's IP address in both DNS fields.
-4. Open **Settings → User's Guide** on the PS5. Wait for **Installed successfully**.
-5. Stop the PC host with **Ctrl+C**. Set the PS5's DNS settings back to **Automatic**, then restart the PS5.
+4. Open **Settings → User's Guide** on the PS5. After **Installed successfully**, Payload Manager opens automatically.
+5. Stop the PC host with **Ctrl+C**. Set the PS5's DNS settings to **127.0.0.1** to stay offline & make sure you don't get a firmware update, then restart the PS5.
 
-The PC method starts from the PS5 User's Guide; it does not need a logo click.
+The PC method starts from the PS5 User's Guide.
 
 ## Use the app
 
-Open **Vynx.dev Autoloader** from the PS5 homescreen. It starts the jailbreak automatically and then loads the Payload Manager. You do not need the website or PC host for normal launches.
+Open **Vynx.dev Autoloader** from the PS5 homescreen. It's located in the "MEDIA" section of the PS5 apps. It starts the jailbreak automatically and then loads the Payload Manager. You do not need the website or PC host for normal launches.
 
-On the first website visit, the logo click runs the **installer**. Open the new homescreen app afterward to use the Payload Manager.
+On the first website visit, the logo click runs the **installer**, then opens Payload Manager automatically. The homescreen app provides the same flow on later launches.
 
 ## If you get stuck
 
