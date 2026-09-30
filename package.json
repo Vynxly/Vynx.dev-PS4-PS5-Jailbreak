@@ -1,7 +1,7 @@
 {
-  "name": "WebKitty",
+  "name": "vynx-jailbreak",
   "version": "1.5.1",
-  "description": "A web interface to jailbreak your PS4",
+  "description": "A local PS4 / PS5 WebKit jailbreak host with User Guide redirect and PSN/update blocking.",
   "main": "index.html",
   "scripts": {
     "build": "babel includes/js/index.js --out-file includes/js/index-legacy.js --presets=@babel/preset-env",

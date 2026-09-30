@@ -29,13 +29,6 @@
     <link rel="stylesheet" id="main-stylesheet" href="">
     <link rel="stylesheet" id="color-stylesheet" href="">
     <script>
-        // Immediately redirect PS4 from HTTPS to HTTP before loading DOM or scripts
-        if (window.location.protocol === 'https:' &&
-            window.location.hostname === 'webkitty.arabpixel.net' &&
-            navigator.userAgent.indexOf('PlayStation 4') !== -1) {
-            window.abortLoading = true;
-            window.location.replace(window.location.href.replace(/^https:/, 'http:'));
-        }
 
         // Prevent "Theme Flash" by applying the href before the body renders
         var savedTheme = localStorage.getItem('theme') || "index";
@@ -121,13 +114,6 @@
 
             <!-- Compatibility message -->
             <p id="PS4FW" class="text-white/70 text-lg mt-4 mb-6">-</p>
-            <a hidden
-                class="secondHostBtn bg-blue-600 hover:bg-blue-700 p-3 rounded font-semibold disabled:opacity-50 transition-colors text-white text-center"
-                href="http://webkitty.arabpixel.net/" style="text-decoration: none;">
-                <button
-                    class="bg-blue-600 hover:bg-blue-700 p-3 rounded font-semibold disabled:opacity-50 transition-colors text-white text-center">Load
-                    payloads using GoldHEN's PayLoader - External link</button>
-            </a>
 
             <!-- Jailbreak flavor options -->
             <div id="choosejb-initial" class="bg-gray-800 p-6 rounded-lg shadow-xl w-full max-w-sm text-center">
@@ -361,13 +347,6 @@
                             </div>
                         </div>
                     </div>
-                    <a hidden
-                        class="secondHostBtn w-full bg-blue-600 hover:bg-blue-700 p-3 rounded font-semibold disabled:opacity-50 transition-colors text-white text-center"
-                        href="http://webkitty.arabpixel.net/" style="text-decoration: none;">
-                        <button
-                            class="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded font-semibold disabled:opacity-50 transition-colors text-white text-center">Load
-                            payloads using GoldHEN's PayLoader - External link</button>
-                    </a>
                 </div>
             </div>
         </section>

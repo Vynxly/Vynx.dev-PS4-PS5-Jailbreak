@@ -3,3 +3,5 @@ src/kpatch/*.elf
 src/kpatch/*.o
 node_modules/
 .local-host/
+/Vynx.dev Jailbreak.zip
+/vynx-jailbreak-*.zip

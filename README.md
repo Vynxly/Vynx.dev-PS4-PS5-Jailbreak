@@ -2,6 +2,11 @@
 
 A simple local PS4 / PS5 WebKit host with **User Guide redirect** and **PSN/update blocking** built in.
 
+## Compatible firmware
+
+- **PS4:** 6.70 - 13.52
+- **PS5:** Supported Relapse firmwares from 7.00 through 13.60. Support is version-specific; not every intermediate firmware is supported.
+
 ## What you need
 
 - Windows PC
