@@ -15,7 +15,7 @@ Firmware **6.xx** and versions not listed above are not supported by this releas
 
 Choose **one** of these methods. Both install the same app.
 
-### From vynx.dev
+### From vynx.dev (If you already have Internet Browser installed on your PS5)
 
 1. On your PS5, open [http://vynx.dev/JB](http://vynx.dev/JB/).
 2. Click the large Vynx logo **once** to start the jailbreak and installer.
