@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="en" manifest="/cache.appcache">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <title>Vynx.dev Autoloader Installer v[[VERSION_PLACEHOLDER]]</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background: #170321;
+      background: -webkit-linear-gradient(180deg, #170321 0%, #07050d 100%);
+      color: #e2e8f0;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      min-height: 100%;
+      text-align: center;
+    }
+
+    #footer {
+      position: fixed;
+      bottom: 12px;
+      left: 50%;
+      -webkit-transform: translateX(-50%);
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      color: #4b5563;
+      line-height: 1.5;
+      text-align: center;
+      z-index: 20;
+    }
+
+
+
+    main {
+      max-width: 42rem;
+      padding: 2rem;
+    }
+
+    .logo {
+      display: inline-block;
+      width: 8rem;
+      height: auto;
+      max-height: 8rem;
+      object-fit: contain;
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.375rem;
+      line-height: 1.5;
+      color: #94a3b8;
+    }
+
+    #status {
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: #c084fc;
+      margin-bottom: 0.5rem;
+    }
+
+    #progressWrap {
+      position: relative;
+      width: 100%;
+      max-width: 30rem;
+      height: 1.25rem;
+      margin: 1.75rem auto 0;
+      background: #1b2436;
+      border: 1px solid #4c1d95;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    #progressBar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: #c084fc;
+      background: -webkit-linear-gradient(90deg, #7e22ce 0%, #c084fc 100%);
+      -webkit-transform: scaleX(0);
+      transform: scaleX(0);
+      -webkit-transform-origin: left center;
+      transform-origin: left center;
+      -webkit-transition: -webkit-transform 0.3s ease-out;
+      transition: transform 0.3s ease-out;
+    }
+
+    #progressPct {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    #logContainer {
+      margin-top: 1rem;
+      width: 100%;
+      max-width: 40rem;
+      height: 12rem;
+      background: #000;
+      border: 1px solid #4c1d95;
+      border-radius: 8px;
+      overflow-y: auto;
+      text-align: left;
+      font-family: monospace;
+      font-size: 0.8rem;
+      padding: 0.5rem;
+      color: #cbd5e1;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    #logContainer.error {
+      color: #f00;
+    }
+
+    #cacheCorruptOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(2, 6, 23, 0.85);
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    #cacheCorruptOverlay .card {
+      background: #1b2436;
+      border: 1px solid #4c1d95;
+      border-radius: 12px;
+      max-width: 34rem;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    #cacheCorruptOverlay h2 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #fbbf24;
+      margin-bottom: 1rem;
+    }
+
+    #cacheCorruptOverlay p {
+      font-size: 1.125rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+      margin-bottom: 1.5rem;
+    }
+
+    #cacheCorruptOverlay .actions {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    #cacheCorruptOverlay .actions[hidden] {
+      display: none !important;
+    }
+
+    #cacheCorruptOverlay .btn {
+      font-size: 1.125rem;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+    #cacheCorruptOverlay .btn.primary {
+      background: #7e22ce;
+      background: -webkit-linear-gradient(90deg, #7e22ce 0%, #c084fc 100%);
+      color: #fff;
+    }
+
+    #cacheCorruptOverlay .btn.secondary {
+      background: #334155;
+      color: #e2e8f0;
+    }
+
+    #choiceContainer {
+      margin-top: 1.5rem;
+      width: 100%;
+      max-width: 38rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #choiceContainer[hidden] {
+      display: none !important;
+    }
+
+    .choice-grid {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      gap: 1.25rem;
+      margin-top: 1rem;
+      text-align: left;
+    }
+
+    .choice-card {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      flex: 1;
+      background: #1b2436;
+      border: 2px solid #4c1d95;
+      border-radius: 12px;
+      padding: 1.5rem 1.25rem;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -webkit-flex-direction: column;
+      flex-direction: column;
+      cursor: pointer;
+      color: inherit;
+      font-family: inherit;
+      -webkit-transition: border-color 0.2s, -webkit-transform 0.2s, background-color 0.2s;
+      transition: border-color 0.2s, transform 0.2s, background-color 0.2s;
+      outline: none;
+    }
+
+    .choice-card:hover,
+    .choice-card:focus {
+      border-color: #c084fc;
+      background-color: #22304a;
+      -webkit-transform: translateY(-2px);
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.4);
+    }
+
+    .choice-card .choice-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #c084fc;
+      margin-bottom: 0.25rem;
+    }
+
+    .choice-card .choice-fw {
+      display: inline-block;
+      align-self: flex-start;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #7dd3fc;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 4px;
+      padding: 0.15rem 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .choice-card .choice-desc {
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+  </style>
+
+</head>
+
+<body>
+  <main>
+    <img class="logo" src="/logo.png" alt="Vynx.dev logo" />
+    <h1>Vynx.dev Autoloader Installer</h1>
+    <p id="status">Loading&hellip;</p>
+    <p id="detail"></p>
+
+    <div id="choiceContainer" hidden>
+      <div class="choice-grid">
+        <button type="button" class="choice-card" id="btnPoops">
+          <div class="choice-title">Poops</div>
+          <div class="choice-fw">FW 7.00 &ndash; 12.00</div>
+          <div class="choice-desc">Works completely offline. Does not require any network connection or active network interface.</div>
+        </button>
+        <button type="button" class="choice-card" id="btnRelapse">
+          <div class="choice-title">Relapse</div>
+          <div class="choice-fw">FW 7.00 &ndash; 13.60</div>
+          <div class="choice-desc">Requires an active network interface (Wi-Fi or Ethernet). Internet access is not required.</div>
+        </button>
+      </div>
+    </div>
+
+    <div id="progressWrap" hidden>
+      <div id="progressBar"></div>
+      <div id="progressPct">0%</div>
+    </div>
+    <div id="logContainer" hidden></div>
+
+  </main>
+
+  <footer id="footer">Vynx.dev Autoloader Installer v[[VERSION_PLACEHOLDER]] · Vynx Developments<br />vynx.dev</footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      function detectFirmware() {
+        var m = /PlayStation 5\/(\d+\.\d+)/.exec(navigator.userAgent);
+        if (!m) return null;
+        return { str: m[1], num: parseFloat(m[1]) };
+      }
+
+      var statusEl = document.getElementById('status');
+      var detailEl = document.getElementById('detail');
+      var choiceContainer = document.getElementById('choiceContainer');
+      var btnPoops = document.getElementById('btnPoops');
+      var btnRelapse = document.getElementById('btnRelapse');
+      var progressWrap = document.getElementById('progressWrap');
+      var progressBar = document.getElementById('progressBar');
+      var progressPct = document.getElementById('progressPct');
+      var completed = false;
+      var isDownloading = false;
+      var isRetry = false;
+      var currentUid = '';
+      var chosenExploit = '';
+      var fwParam = '';
+      var simulateCorrupt = false;
+      var corruptionPromptShown = false;
+
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        isRetry = params.get('retry') === '1';
+        currentUid = params.get('uid') || '';
+        chosenExploit = params.get('exploit') || '';
+        fwParam = params.get('fw') || '';
+        /* Test hook: ?simulate=corrupt forces the corruption prompt without
+         * needing a real AppCache error (e.g. for quick UI testing in a
+         * desktop browser via `make dev`). */
+        simulateCorrupt = params.get('simulate') === 'corrupt';
+      })();
+
+      var POOPS_FIRMWARES = ["7.00", "7.01", "7.20", "7.40", "7.60", "7.61", "8.00", "8.20", "8.40", "8.60", "9.00", "9.05", "9.20", "9.40", "9.60", "10.00", "10.01", "10.20", "10.40", "10.60", "11.00", "11.20", "11.40", "11.60", "12.00"];
+      var RELAPSE_FIRMWARES = ["7.00", "7.01", "7.20", "7.40", "7.60", "7.61", "8.00", "8.20", "8.40", "8.60", "9.00", "9.20", "9.40", "9.60", "10.00", "10.01", "10.20", "10.40", "10.60", "11.00", "11.20", "11.60", "12.00", "12.02", "12.20", "12.40", "12.60", "12.70", "13.00", "13.20", "13.40", "13.42", "13.60"];
+
+      var fw = detectFirmware();
+      var fwStr = fw ? fw.str : fwParam;
+      var fwNum = fw ? fw.num : (fwParam ? parseFloat(fwParam) : 0);
+      var hasPoops = fwStr ? (POOPS_FIRMWARES.indexOf(fwStr) !== -1) : (fwNum >= 7.00 && fwNum <= 12.00);
+      var hasRelapse = fwStr ? (RELAPSE_FIRMWARES.indexOf(fwStr) !== -1) : (fwNum >= 7.00 && fwNum <= 13.60);
+      var isDualSupported = (hasPoops && hasRelapse) || (!fw && !fwParam && !chosenExploit);
+      // Vynx uses the automatic compatibility matrix. Relapse is the default
+      // on dual-supported firmware; Poops remains selected for 9.05/11.40.
+      var needsChoice = false;
+
+      function chooseExploit(choice) {
+        try {
+          localStorage.setItem('wkal_exploit', choice);
+        } catch (e) { }
+        var p = new URLSearchParams(window.location.search);
+        p.set('exploit', choice);
+        window.location.replace(window.location.pathname + '?' + p.toString());
+      }
+
+      if (btnPoops) {
+        btnPoops.addEventListener('click', function () {
+          chooseExploit('poops');
+        });
+      }
+      if (btnRelapse) {
+        btnRelapse.addEventListener('click', function () {
+          chooseExploit('relapse');
+        });
+      }
+
+
+      var logContainer = document.getElementById('logContainer');
+      var seenLogs = "";
+
+      function appendLog(msg) {
+        if (needsChoice) return;
+        logContainer.hidden = false;
+        var div = document.createElement('div');
+        div.textContent = msg;
+        logContainer.appendChild(div);
+        logContainer.scrollTop = logContainer.scrollHeight;
+      }
+
+
+      var logPos = 0;
+      var logXhr = null;
+
+      function pollLogs() {
+        if (needsChoice) return;
+        logXhr = new XMLHttpRequest();
+        logXhr.open('GET', '/logs?pos=' + logPos, true);
+        logXhr.onreadystatechange = function () {
+          if (logXhr.readyState === 4) {
+            if (logXhr.status === 200) {
+              var newLogs = logXhr.responseText;
+              if (newLogs.length > 0) {
+                var lines = newLogs.split('\n');
+                for (var i = 0; i < lines.length; i++) {
+                  if (lines[i].trim() !== '') appendLog(lines[i]);
+                }
+              }
+              var newPosStr = logXhr.getResponseHeader("X-Log-Pos");
+              if (newPosStr) {
+                logPos = parseInt(newPosStr, 10);
+              }
+              // Add a slight delay before reconnecting to reduce server load
+              setTimeout(pollLogs, 100);
+            } else {
+              // Server is down or error
+              if (completed) return; // Stop polling completely if we finished
+              setTimeout(pollLogs, 1000);
+            }
+          }
+        };
+        logXhr.send();
+      }
+      // Start the long-polling loop only when not on exploit selection
+      if (!needsChoice) {
+        pollLogs();
+      }
+
+
+      var probeOk = false;
+
+
+      var AUTOLOADER_URL = '/app/index.html';
+
+      function setProgress(pct) {
+        progressBar.style.webkitTransform = 'scaleX(' + pct / 100 + ')';
+        progressBar.style.transform = 'scaleX(' + pct / 100 + ')';
+        progressPct.textContent = pct + '%';
+      }
+
+      function setInstalled() {
+        statusEl.textContent = 'Installed successfully';
+        statusEl.style.color = '#22c55e';
+        progressBar.style.background = '-webkit-linear-gradient(90deg, #16a34a 0%, #22c55e 100%)';
+        detailEl.textContent = 'The Vynx.dev Autoloader shortcut is now on your PS5 homescreen. You can close this page.';
+        setProgress(100);
+      }
+
+      function setFailed() {
+        statusEl.textContent = 'Install failed';
+        statusEl.style.color = '#ef4444';
+        progressBar.style.background = '-webkit-linear-gradient(90deg, #dc2626 0%, #ef4444 100%)';
+        detailEl.textContent = 'The app could not be installed. Close this page and re-run the installer.';
+      }
+
+      function setSlow() {
+        statusEl.textContent = 'Caching is taking unusually long';
+        detailEl.textContent = 'The shortcut is only created after the cache finishes. If this never completes, close the browser and re-run the installer.';
+      }
+
+      function setCaching() {
+        statusEl.textContent = 'Caching content...';
+        detailEl.textContent = 'Please wait a moment. Do not close this page yet!';
+        progressWrap.hidden = false;
+        if (!logXhr) {
+          pollLogs();
+        }
+      }
+
+      function goToAutoloader() {
+        window.location.replace(AUTOLOADER_URL);
+      }
+
+      function probeServer() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/version', true);
+        xhr.timeout = 1000;
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              var hdrUid = xhr.getResponseHeader("X-User-Id");
+              if (hdrUid) currentUid = hdrUid;
+              probeOk = true;
+              setCaching();
+            } else {
+              goToAutoloader();
+            }
+          }
+        };
+        xhr.onerror = function () {
+          goToAutoloader();
+        };
+        xhr.ontimeout = function () {
+          goToAutoloader();
+        };
+        xhr.send();
+      }
+
+      function installApp() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/install', true);
+        xhr.timeout = 30000;
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              setInstalled();
+            } else {
+              setFailed();
+            }
+          }
+        };
+        xhr.onerror = function () {
+          setFailed();
+        };
+        xhr.ontimeout = function () {
+          setFailed();
+        };
+        xhr.send();
+      }
+
+      function maybeInstall() {
+        if (completed) {
+          return;
+        }
+        completed = true;
+        installApp();
+      }
+
+      function setCacheCorrupted() {
+        if (corruptionPromptShown) {
+          return;
+        }
+        corruptionPromptShown = true;
+        completed = true;
+        progressWrap.hidden = true;
+        logContainer.hidden = true;
+        statusEl.textContent = 'Caching failed';
+        detailEl.textContent = '';
+
+        var overlay = document.createElement('div');
+        overlay.id = 'cacheCorruptOverlay';
+
+        var card = document.createElement('div');
+        card.className = 'card';
+
+        var title = document.createElement('h2');
+        var msg = document.createElement('p');
+        var actions = null;
+
+        var webkitShellPath = '/user/home/' + (currentUid || '<userid>') + '/webkit/shell/';
+
+        if (isRetry) {
+          title.textContent = 'Cache issue persists';
+          msg.textContent = 'Clearing WebKit data from ' + webkitShellPath + ' didn\'t seem to fix the issue. You can close this page.';
+          var exitXhr = new XMLHttpRequest();
+          exitXhr.open('GET', '/exit', true);
+          exitXhr.send();
+        } else {
+          title.textContent = 'WebKit cache appears corrupted';
+          msg.textContent = 'Your PS5\'s WebKit browser data may be corrupted, preventing the cache from completing. Clearing it may fix the issue. ';
+          var strong = document.createElement('strong');
+          strong.textContent = 'This will remove all browser data in ' + webkitShellPath + ' (AppCache, cookies, local storage) for the current user.';
+          msg.appendChild(strong);
+
+          actions = document.createElement('div');
+          actions.className = 'actions';
+
+          var clearBtn = document.createElement('button');
+          clearBtn.className = 'btn primary';
+          clearBtn.textContent = 'Clear WebKit Data & Retry';
+          clearBtn.addEventListener('click', function () {
+            actions.hidden = true;
+            actions.style.display = 'none';
+            msg.textContent = 'Clearing data and restarting browser...';
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/clear-webkit-data', true);
+            xhr.timeout = 30000;
+            xhr.onreadystatechange = function () {
+              if (xhr.readyState === 4 && xhr.status !== 200) {
+                msg.textContent = 'Failed to clear WebKit data';
+                actions.hidden = false;
+                actions.style.display = '';
+              }
+            };
+            xhr.onerror = function () {
+              msg.textContent = 'Failed to clear WebKit data';
+              actions.hidden = false;
+              actions.style.display = '';
+            };
+            xhr.ontimeout = function () {
+              msg.textContent = 'Failed to clear WebKit data';
+              actions.hidden = false;
+              actions.style.display = '';
+            };
+            xhr.send();
+          });
+          actions.appendChild(clearBtn);
+
+          var cancelBtn = document.createElement('button');
+          cancelBtn.className = 'btn secondary';
+          cancelBtn.textContent = 'Cancel';
+          cancelBtn.addEventListener('click', function () {
+            msg.textContent = 'You can close this page. Re-run the installer ELF to try again.';
+            actions.hidden = true;
+            actions.style.display = 'none';
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/exit', true);
+            xhr.send();
+          });
+          actions.appendChild(cancelBtn);
+        }
+
+        card.appendChild(title);
+        card.appendChild(msg);
+        if (actions) {
+          card.appendChild(actions);
+        }
+        overlay.appendChild(card);
+        document.body.appendChild(overlay);
+      }
+
+      window.addEventListener('load', function () {
+        /* Test hook: ?simulate=corrupt forces the corruption prompt as if an
+         * AppCache error fired during download, and skips the probe/install
+         * polling so the prompt stays up for UI testing (e.g. make dev). */
+        if (simulateCorrupt) {
+          isDownloading = true;
+          setCacheCorrupted();
+          return;
+        }
+
+        if (needsChoice) {
+          statusEl.textContent = 'Select Exploit';
+          var fwDisplay = fw ? ('Firmware ' + fw.str) : (fwParam ? ('Firmware ' + fwParam) : 'Your firmware');
+          detailEl.textContent = '';
+          detailEl.appendChild(document.createTextNode(fwDisplay + ' supports both Poops and Relapse.'));
+          detailEl.appendChild(document.createElement('br'));
+          detailEl.appendChild(document.createTextNode('Select which one to install:'));
+          choiceContainer.hidden = false;
+          logContainer.hidden = true;
+          if (btnPoops) btnPoops.focus();
+          return;
+        }
+
+        if (chosenExploit) {
+          try {
+            localStorage.setItem('wkal_exploit', chosenExploit);
+          } catch (e) { }
+        } else if (hasPoops && !hasRelapse) {
+          try {
+            localStorage.setItem('wkal_exploit', 'poops');
+          } catch (e) { }
+        } else if ((hasRelapse && !hasPoops) || fwNum > 12.00) {
+          try {
+            localStorage.setItem('wkal_exploit', 'relapse');
+          } catch (e) { }
+        } else if (fwNum > 0 && fwNum <= 5.50) {
+          try {
+            localStorage.setItem('wkal_exploit', 'umtx2');
+          } catch (e) { }
+        }
+
+        probeServer();
+
+        /* The shortcut is created only once the AppCache is current, so the
+           installer never installs a partial cache. /install then both installs
+           the homescreen app and stops the server. */
+        var waitTimer = setInterval(function () {
+          if (completed) {
+            clearInterval(waitTimer);
+            return;
+          }
+          if (!probeOk) {
+            clearInterval(waitTimer);
+            goToAutoloader();
+            return;
+          }
+          if (!window.applicationCache) {
+            clearInterval(waitTimer);
+            maybeInstall();
+            return;
+          }
+          if (window.applicationCache.status === window.applicationCache.UPDATEREADY) {
+            clearInterval(waitTimer);
+            try {
+              window.applicationCache.swapCache();
+            } catch (e) { }
+            maybeInstall();
+            return;
+          }
+        }, 1000);
+
+        /* Safety cap — never leave the installer hanging on screen. It does NOT
+           install or exit: a partial cache must never create a shortcut, so the
+           user simply re-runs the installer if this never completes. */
+        setTimeout(function () {
+          if (!completed && probeOk) {
+            setSlow();
+          }
+        }, 120000);
+      });
+
+
+      if (window.applicationCache) {
+        window.applicationCache.addEventListener('checking', function () {
+          progressWrap.hidden = false;
+          appendLog("[AppCache] Checking for manifest...");
+        });
+        window.applicationCache.addEventListener('downloading', function () {
+          isDownloading = true;
+          appendLog("[AppCache] Downloading cache...");
+        });
+        window.applicationCache.addEventListener('progress', function (e) {
+          if (e.url) appendLog("[AppCache] Fetching: " + e.url);
+          if (e.total && e.total > 0) {
+            var pct = Math.min(99, Math.round((e.loaded / e.total) * 100));
+            setProgress(pct);
+          }
+        });
+        window.applicationCache.addEventListener('error', function (e) {
+          appendLog("[AppCache] Error occurred! Status: " + window.applicationCache.status);
+          logContainer.className = 'error';
+          if (isDownloading) {
+            setCacheCorrupted();
+          }
+        });
+        window.applicationCache.addEventListener('obsolete', function (e) {
+          appendLog("[AppCache] Manifest is obsolete.");
+        });
+        window.applicationCache.addEventListener('cached', function() {
+          isDownloading = false;
+          appendLog("[AppCache] Caching complete.");
+          maybeInstall();
+        });
+        window.applicationCache.addEventListener('noupdate', function() {
+          isDownloading = false;
+          appendLog("[AppCache] No update needed.");
+          maybeInstall();
+        });
+        window.applicationCache.addEventListener('updateready', function () {
+          isDownloading = false;
+          if (window.applicationCache.status === window.applicationCache.UPDATEREADY) {
+            try {
+              window.applicationCache.swapCache();
+            } catch (e) { }
+          }
+          appendLog("[AppCache] Update ready.");
+          maybeInstall();
+        });
+      }
+    })();
+  </script>
+</body>
+
+</html>

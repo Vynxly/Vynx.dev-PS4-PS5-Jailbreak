@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vynx Jailbreak · PS5 Relapse</title>
+  <style>
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: #07050d;
+      color: #f5f3ff;
+      font-family: monospace;
+    }
+    #console {
+      box-sizing: border-box;
+      min-height: 100vh;
+      padding: 24px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      background: radial-gradient(circle at top, #1b102b 0%, #07050d 52%);
+    }
+    #console > div { margin: 0 0 6px; }
+  </style>
+</head>
+<body>
+  <div id="console"></div>
+  <script src="./src/firmware.js"></script>
+  <script src="./src/main.js"></script>
+  <script src="./src/rop.js"></script>
+  <script src="./src/utils/syscalls.js"></script>
+  <script type="module" src="./src/site.js"></script>
+</body>
+</html>

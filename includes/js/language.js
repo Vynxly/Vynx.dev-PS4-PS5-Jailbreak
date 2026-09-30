@@ -1,0 +1,186 @@
+function loadLanguage() {
+    var langRadio = document.querySelector(`input[name="language"][value="${user.currentLanguage}"]`);
+    if (!langRadio) {
+        user.currentLanguage = 'en';
+        langRadio = document.querySelector(`input[name="language"][value="en"]`);
+    }
+    langRadio.checked = true;
+
+    const langScript = document.getElementById("langScript");
+    if (langScript) langScript.remove();
+    // load language file
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = `./includes/js/languages/${user.currentLanguage}.js`;
+        script.onload = () => resolve(window.lang);
+        script.id = "langScript";
+        script.onerror = () => reject(new Error(`Failed to load ${user.currentLanguage}`));
+        document.head.appendChild(script);
+    });
+}
+
+function saveLanguage(language) {
+    if (!language) return;
+    localStorage.setItem('language', language);
+    user.currentLanguage = language;
+    initLanguage();
+};
+
+// Update UI langauge
+function applyLanguage(lang) {
+    user.currentLanguage = lang;
+    const strings = window.lang
+
+    if (!strings) {
+        console.error(`Language list ${lang} is not available`);
+        return;
+    }
+    /**
+     * Safely updates element's textContent only if translation exists and is not empty.
+     * @param {HTMLElement} element - The DOM element to update.
+     * @param {string} key - The key in the 'strings' object.
+     */
+    const updateText = (element, key) => {
+        const translation = strings[key];
+        // Check if element exists, and translation is a non-empty string.
+        if (element && translation) {
+            element.textContent = translation;
+        }
+    };
+
+    /**
+     * Safely updates element's title attribute only if translation exists and is not empty.
+     * @param {HTMLElement} element - The DOM element to update.
+     * @param {string} key - The key in the 'strings' object.
+     */
+    const updateTitle = (element, key) => {
+        const translation = strings[key];
+        // Check if element exists, and translation is a non-empty string.
+        if (element && translation) {
+            element.title = translation;
+        }
+    };
+
+    // Document Properties
+    document.title = projectName;
+    document.dir = rtlLangs.includes(user.currentLanguage) ? 'rtl' : 'ltr';
+    ui.consoleElement.dir = document.dir;
+    document.lang = user.currentLanguage;
+
+
+    // PlayStation firmware status check
+    const ps4Fw = window.ps4Fw;
+    const ps5Fw = window.ps5Fw;
+
+    if (user.platform === "PS5") {
+        if (!ps5Fw) {
+            ui.ps4FwStatus.textContent = "PS5 firmware could not be detected";
+        } else if (typeof isPs5AutoloaderSupportedFirmware === "function" && isPs5AutoloaderSupportedFirmware(ps5Fw)) {
+            ui.ps4FwStatus.textContent = `PS5 FW ${ps5Fw} | Autoloader supported`;
+        } else {
+            ui.ps4FwStatus.textContent = `PS5 FW ${ps5Fw} | Autoloader not supported`;
+        }
+    } else if (ps4Fw === undefined) {
+        if (strings.notPs4 && strings.notPs4.length > 0) {
+            ui.ps4FwStatus.textContent = strings.notPs4 + user.platform;
+        }
+    } else if (ps4Fw <= webKitMax && ps4Fw >= webKitMin) {
+        if (strings.ps4FwCompatible && strings.ps4FwCompatible.length > 0) {
+            ui.ps4FwStatus.textContent = strings.ps4FwCompatible.replace('{ps4fw}', ps4Fw);
+        }
+    } else {
+        if (strings.ps4FwIncompatible && strings.ps4FwIncompatible.length > 0) {
+            ui.ps4FwStatus.textContent = strings.ps4FwIncompatible.replace('{ps4fw}', ps4Fw);
+        }
+    }
+
+    // Main Screen Elements
+    updateTitle(ui.settingsBtn, 'settingsBtnTitle');
+    if (localStorage.getItem('theme') == "compact") {
+        updateText(ui.clickToStartText, projectName);
+    } else updateText(ui.clickToStartText, 'clickToStart');
+
+    updateText(document.querySelector('#choosejb-initial h3'), 'chooseHEN');
+
+    // About Us Popup
+    if (ui.aboutPopup) {
+        updateText(ui.aboutPopup.querySelector('h2'), 'aboutMenu');
+        if (projectName) ui.aboutPopup.querySelector('h2').textContent += ' ' + projectName;
+        var aboutParagraphs = ui.aboutPopup.querySelectorAll('p');
+        if (aboutParagraphs.length > 0) updateText(aboutParagraphs[0], 'aboutVersion');
+        if (aboutParagraphs.length > 1) updateText(aboutParagraphs[1], 'aboutDescription');
+        if (aboutParagraphs.length > 2) updateText(aboutParagraphs[2], 'hostedOn')
+        updateText(ui.aboutPopup.querySelector('#PS4FWOK h3'), 'ps4FirmwareSupportedHeader');
+        ui.aboutPopup.querySelector('#listfw').style.direction = rtlLangs.includes(user.currentLanguage) ? 'ltr' : 'ltr';
+        ui.aboutPopup.querySelector('#listfw').style.justifyContent = rtlLangs.includes(user.currentLanguage) ? 'end' : 'start';
+        updateText(ui.aboutPopup.querySelector('#close-about'), 'closeButton');
+        updateText(ui.aboutPopup.querySelector('#goldhenFirmwareSemiSupported i'), 'goldhenFirmwareSemiSupported');
+        updateText(ui.aboutPopup.querySelector('#creditsHeader'), 'creditsHeader');
+    }
+    updateText(ui.bareboneJbBtn, 'bareboneJB')
+
+    // Fan Threshold
+    if (ui.chooseFanThreshold) {
+        updateText(ui.chooseFanThreshold.querySelector('#close-fanChoose'), 'closeButton');
+        updateText(ui.chooseFanThreshold.querySelector('h2'), 'fanTitle');
+        updateText(ui.chooseFanThreshold.querySelector('p'), 'fanDescription');
+        updateText(ui.chooseFanThreshold.querySelector('h3'), 'selectTemp');
+    }
+    updateText(document.getElementById('defaultTemp'), 'default');
+
+    // Settings Popup 
+    if (ui.settingsPopup) {
+        updateText(ui.settingsPopup.querySelector('h2'), 'settingsPsfreeHeader');
+        updateText(ui.settingsPopup.querySelector('#close-settings'), 'closeButton');
+        updateText(ui.settingsPopup.querySelector('#ghVer'), 'ghVer');
+        var ghOtherVer = ui.settingsPopup.querySelector('#chooseGoldHEN summary');
+        if (ghOtherVer) updateText(ghOtherVer, 'otherVer');
+        updateText(ui.settingsPopup.querySelector('#latestVer'), 'latestVer');
+        updateText(ui.settingsPopup.querySelector('#scanPayLoader'), 'scanPayLoader');
+        updateText(ui.settingsPopup.querySelector('#shutdownServerBtn'), 'shutdownServerBtn');
+        updateText(ui.settingsPopup.querySelector('#reloadAfterJbText'), 'reloadAfterJbText');
+    }
+
+    if (ui.themePopup) {
+        updateText(ui.themePopup.querySelector('#chooselang h3'), 'languageHeader');
+        updateText(ui.themePopup.querySelector('h2'), 'themeSettingsHeader');
+        updateText(ui.themePopup.querySelector('#close-theme'), 'closeButton');
+        updateText(document.getElementById('catppuccinoColor'), 'catppuccino');
+        updateTitle(document.getElementById('theme-btn'), 'layout');
+    }
+    updateText(document.getElementById('showAdvancedPayloads'), 'showAdvancedPayloads');
+    updateText(document.getElementById('optionsHeader'), 'optionsHeader');
+    updateText(document.getElementById('layout'), 'layouts');
+    updateText(document.getElementById('defaultTheme'), 'defaultTheme');
+    updateText(document.getElementById('compactTheme'), 'compactTheme');
+    updateText(document.getElementById('vibrantColor'), 'vibrantColor');
+    updateText(document.getElementById('themeWord'), 'themeWord');
+    updateText(document.getElementById('defaultColor'), 'defaultTheme');
+    updateText(document.getElementById('modularLapse'), 'modularLapse');
+    updateText(document.getElementById('bundleLapse'), 'bundleLapse');
+    updateText(document.getElementById('autoJbRetryText'), 'autoJbRetryText');
+    updateText(ui.exploitChainTitle, 'exploitChainTitle');
+    if (isHttps()) {
+        if (ui.secondHostBtn && ui.secondHostBtn[1]) {
+            ui.secondHostBtn[1].style.display = "block";
+        }
+    }
+
+    // --- Buttons ---
+    if (ui.secondHostBtn && ui.secondHostBtn[0]) updateText(ui.secondHostBtn[0], 'secondHostBtn');
+    if (ui.secondHostBtn && ui.secondHostBtn[1]) updateText(ui.secondHostBtn[1], 'secondHostBtn');
+    updateTitle(ui.exploitRunBtn, 'clickToStart')
+    updateTitle(ui.aboutBtn, 'aboutMenu');
+
+    updateText(document.querySelector('#exploit-status-panel div h2'), 'exploitStatusHeader');
+    updateText(ui.successRateText, 'successRate');
+    updateText(ui.payloadsSectionTitle, 'payloadsHeader');
+    updateText(ui.toolsTab, 'payloadsToolsHeader');
+    updateText(ui.linuxTab, 'payloadsLinuxHeader');
+    updateText(ui.advancedPayloadsTab, 'advanced');
+    updateText(ui.consoleElement.querySelector('center'), 'waitingUserInput');
+    updateText(ui.updateCacheBtn, 'updateCache');
+
+    // Change direction of 'Default' option text for the fan threshold panel
+    document.getElementById('defaultTempDiv').style.float = rtlLangs.includes(user.currentLanguage) ? "left" : "right";
+}

@@ -1,0 +1,11 @@
+frontend/dist/
+include/file_registry.c
+include/file_registry.h
+include/.file_registry.stamp
+include/vynxi_version.h
+assets/param.json
+vynx-autoloader-installer*.elf
+vynx-autoloader-host*.py
+release/
+previous-v2.0/
+__pycache__/
