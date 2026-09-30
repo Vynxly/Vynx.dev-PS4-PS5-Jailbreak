@@ -308,9 +308,12 @@ async function main(userlandRW) {
   const { p, chain } = await prepareRop(userlandRW);
   const { isElfldrListening } = await import("./kexp.js");
   if (await isElfldrListening(p, chain)) {
-    const why = "Already jailbroken.";
-    log(why, "error");
-    if (AUTOLOAD) reportAutoload(false, { why: why });
+    if (AUTOLOAD) {
+      log("elfldr is already running; sending " + AUTOLOAD, "info");
+      await startAutoload(p, chain);
+    } else {
+      log("Already jailbroken.", "error");
+    }
     return;
   }
   const { runKernelExploit } = await import("./relapse_exploit.js");

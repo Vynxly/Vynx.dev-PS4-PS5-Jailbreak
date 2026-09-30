@@ -29,9 +29,9 @@ The PC method starts from the PS5 User's Guide.
 
 ## Use the app
 
-Open **Vynx.dev Autoloader** from the PS5 homescreen. It's located in the "MEDIA" section of the PS5 apps. It starts the jailbreak automatically and then loads the Payload Manager. You do not need the website or PC host for normal launches.
+Open **Vynx.dev Autoloader** from the PS5 homescreen. It's located in the "MEDIA" section of the PS5 apps. It starts the jailbreak automatically. You do not need the website or PC host for normal launches.
 
-On the first website visit, the logo click runs the **installer**, then opens Payload Manager automatically. The homescreen app provides the same flow on later launches.
+On the first website visit, the logo click runs the **installer**, then sends `pldmgr.elf` and opens Payload Manager automatically. Later homescreen launches use the app's normal automatic jailbreak flow.
 
 ## If you get stuck
 

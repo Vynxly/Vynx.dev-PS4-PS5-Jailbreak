@@ -2637,12 +2637,9 @@ function lastRunText() {
         await refreshConsoleNetworkInfo();
         if (await probeExistingElfLoader()) {
             if (cfg.autoload) {
-                const why = "Already jailbroken.";
-                screenLine("[-] " + why);
-                stage(why, "bad");
-                try {
-                    window.parent.postMessage({ type: "wkal", kind: "autoload", ok: false, why: why }, "*");
-                } catch (e) { }
+                screenLine("[+] ELF loader already running; sending " + cfg.autoload);
+                stage("sending " + cfg.autoload + " to the existing ELF loader", "ok");
+                await startAutoload();
             } else {
                 openExistingPayloadMenu();
             }

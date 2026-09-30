@@ -42,7 +42,8 @@ This component preserves the Vynx frontend and combines it with selected code an
 
 - `ps5-autoload/shared/elfldr-ps5.elf`: itsPLK ps5-elfldr `v0.26-bb1e117`, SHA-256 `fa3f0c2b778318000982ada05c01bde70ac875c85e4be6fcc9b5ba836f6d1c3c`; GPL v3 text in `licenses/ps5-elfldr-GPL-3.0.txt`.
 - `ps5-autoload/shared/kexp-ps5.bin`: itsPLK ps5-kexp `v0.8-24cf6e5`, SHA-256 `4e29cb74ffc1771b16e59d4998517aea32ecded651f814b71dc7ee50abff089f`.
-- `ps5-autoload/payloads/payload.elf`: ps5-unified-autoloader `v0.1.5-915a65e`, SHA-256 `c8e36ea06cfd37c5fad356ff9fcd09d3e62065d88170b5119ce8f1eeb3efacac`; GPL v3 text in `licenses/ps5-unified-autoloader-GPL-3.0.txt`.
+- `ps5-autoload/payloads/payload.elf`: ps5-unified-autoloader v0.1.5, SHA-256 `c8e36ea11b90d695cd20b40b14b8fe76b585a221a6041a7c5af1d4a3efb95b57`; GPL v3 text in `licenses/ps5-unified-autoloader-GPL-3.0.txt`.
+- `ps5-autoload/payloads/pldmgr.elf`: Payload Manager `pldmgr_v0.5.2.elf`, copied from the Vynx Relapse payload set and sent after the one-time app installation; SHA-256 `62b3ba2a4937c2afc502f9a4e7242cca538610ebb4ae2800c7c6f72e7f268e7c`.
 
 ## Other retained credits
 

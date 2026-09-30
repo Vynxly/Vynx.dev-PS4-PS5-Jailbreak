@@ -39,15 +39,21 @@
   var POOPS_FIRMWARES = ["7.00", "7.01", "7.20", "7.40", "7.60", "7.61", "8.00", "8.20", "8.40", "8.60", "9.00", "9.05", "9.20", "9.40", "9.60", "10.00", "10.01", "10.20", "10.40", "10.60", "11.00", "11.20", "11.40", "11.60", "12.00"];
   var RELAPSE_FIRMWARES = ["7.00", "7.01", "7.20", "7.40", "7.60", "7.61", "8.00", "8.20", "8.40", "8.60", "9.00", "9.20", "9.40", "9.60", "10.00", "10.01", "10.20", "10.40", "10.60", "11.00", "11.20", "11.60", "12.00", "12.02", "12.20", "12.40", "12.60", "12.70", "13.00", "13.20", "13.40", "13.42", "13.60"];
 
+  /* The normal homescreen launch uses payload.elf. The installer opens this
+     page once with ?autoload=pldmgr.elf, so that Payload Manager is injected
+     after the shortcut has been created. Keep this to the two bundled names;
+     never turn a URL parameter into an arbitrary file path. */
+  var requestedAutoload = new URLSearchParams(location.search).get('autoload');
+  var autoloadName = requestedAutoload === 'pldmgr.elf' ? 'pldmgr.elf' : 'payload.elf';
   var UMTX2_URL =
-    'umtx2/index.html?autoload=payload.elf&v=1';
+    'umtx2/index.html?autoload=' + encodeURIComponent(autoloadName) + '&v=1';
   /* Keep in sync with gen_file_registry.py iframe URLs — the AppCache
      manifest lists these exact URLs so the console can serve them offline
      (AppCache matches URLs including the query string). */
   var POOPS_URL =
-    'slopkit/slopkit/poops.html?go=1&auto=1&production=1&trigger=netcontrol&attempts=8&only=ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5&log=debug&payload=1&autoload=payload.elf&v=final';
+    'slopkit/slopkit/poops.html?go=1&auto=1&production=1&trigger=netcontrol&attempts=8&only=ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate,ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5&log=debug&payload=1&autoload=' + encodeURIComponent(autoloadName) + '&v=final';
   var RELAPSE_URL =
-    'relapse/index.html?autoload=payload.elf';
+    'relapse/index.html?autoload=' + encodeURIComponent(autoloadName);
 
   /* The slopkit chain (poops 7.00-12.00) keeps a one-shot latch and its
      "stopped at …" marker in sessionStorage under shared "slopkit-poops:*"
@@ -503,7 +509,7 @@
     try {
       if (picked === 'umtx2') {
         sessionStorage.setItem('on_load_autorun', 'kernel');
-        sessionStorage.setItem('wkal_autoload', 'payload.elf');
+        sessionStorage.setItem('wkal_autoload', autoloadName);
       } else {
         sessionStorage.removeItem('on_load_autorun');
         sessionStorage.removeItem('wkal_autoload');

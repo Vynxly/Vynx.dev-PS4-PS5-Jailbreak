@@ -91,7 +91,7 @@ def build_zip(frontend_dir, overrides_dir, version, build_time, payload_path=Non
                 file_map[rel] = full
 
     # 3. Host payload override: the PC host is the one-time setup flow, so it
-    #    serves the installer ELF instead of the bundled unified-autoloader.
+    #    serves the installer ELF instead of the bundled unified autoloader.
     #    The virtual path stays the same ("payload.elf") so the
     #    autoloader's ?autoload= request is unchanged — only the bytes differ.
     if payload_path:
@@ -218,7 +218,7 @@ def main(argv=None):
                         help="Output script (default: vynx-autoloader-host.py).")
     parser.add_argument("--payload", default=None,
                         help="ELF to serve as ps5-autoload/payloads/payload.elf in place of the "
-                             "bundled unified-autoloader (default: bundled payload).")
+                             "bundled unified-autoloader payload (default: bundled payload).")
     args = parser.parse_args(argv)
 
     frontend_dir = os.path.abspath(args.frontend)

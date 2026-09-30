@@ -45,6 +45,7 @@ def main():
             "ps5-autoload/app.js",
             "ps5-autoload/selected_exploit",
             "ps5-autoload/payloads/payload.elf",
+            "ps5-autoload/payloads/pldmgr.elf",
             "ps5-autoload/relapse/index.html",
             "ps5-autoload/slopkit/slopkit/poops.html",
             "ps5-autoload/umtx2/index.html",
@@ -81,6 +82,12 @@ def main():
         fail("__complete__ is not the final cache entry after the stable pointer")
     if any(line.startswith(f"/app/{args.version}/") for line in manifest):
         fail("manifest contains an unprefixed version directory")
+    post_install_url = (
+        f"/app/v{args.version}/ps5-autoload/index.html"
+        "?autoload=pldmgr.elf&post-install=1"
+    )
+    if post_install_url not in manifest:
+        fail("manifest is missing the post-install Payload Manager route")
 
     print(f"OK: Vynx.dev Autoloader v{args.version}")
     print(f"  host archive: {len(names)} files")

@@ -156,13 +156,13 @@ def compress_entry(data):
 
 
 # The autoloader iframe loads poops.html with this exact query string.
-def poops_iframe_url(app_dir):
+def poops_iframe_url(app_dir, payload="payload.elf"):
     return (
         app_dir + "/ps5-autoload/slopkit/slopkit/poops.html"
         "?go=1&auto=1&production=1&trigger=netcontrol&attempts=8"
         "&only=ps0_preflight,ps1_prepare,ps3_stage0,ps4_validate"
         ",ps5_stage1,ps6_stage2,ps8_stage3,ps9_stage4,ps10_stage5"
-        "&log=debug&payload=1&autoload=payload.elf&v=final"
+        "&log=debug&payload=1&autoload=" + payload + "&v=final"
     )
 
 
@@ -172,16 +172,16 @@ def poops_iframe_url(app_dir):
 # page. The app lives under /app/v<version>/, so the URL is prefixed with that.
 # Keep in sync with RELAPSE_URL in frontend/autoloader/app.js (which resolves to
 # the same absolute path from the versioned app dir).
-def relapse_iframe_url(app_dir):
-    return app_dir + "/ps5-autoload/relapse/index.html?autoload=payload.elf"
+def relapse_iframe_url(app_dir, payload="payload.elf"):
+    return app_dir + "/ps5-autoload/relapse/index.html?autoload=" + payload
 
 
 # umtx2 auto-runs its chain on load via the 'on_load_autorun' sessionStorage
 # key set by app.js; the URL carries the autoload payload name + a cache-bust
 # that must be bumped together with the umtx2 patch (patches/umtx2-autoload.patch).
 # Keep in sync with UMTX2_URL in frontend/autoloader/app.js.
-def umtx2_iframe_url(app_dir):
-    return app_dir + "/ps5-autoload/umtx2/index.html?autoload=payload.elf&v=1"
+def umtx2_iframe_url(app_dir, payload="payload.elf"):
+    return app_dir + "/ps5-autoload/umtx2/index.html?autoload=" + payload + "&v=1"
 
 
 # slopkit references its own scripts with cache-busting query strings
@@ -239,6 +239,14 @@ def build_manifest(files, version, build_time, app_dir, pointer_path, marker_pat
     lines.append(poops_iframe_url(app_dir))
     lines.append(relapse_iframe_url(app_dir))
     lines.append(umtx2_iframe_url(app_dir))
+    # The native installer opens this exact cached URL once after install, then
+    # the selected exploit iframe injects the separately replaceable Payload
+    # Manager binary. AppCache keys include query strings, so include every
+    # URL used by that one-time flow explicitly.
+    lines.append(app_dir + "/ps5-autoload/index.html?autoload=pldmgr.elf&post-install=1")
+    lines.append(poops_iframe_url(app_dir, "pldmgr.elf"))
+    lines.append(relapse_iframe_url(app_dir, "pldmgr.elf"))
+    lines.append(umtx2_iframe_url(app_dir, "pldmgr.elf"))
     lines += collect_cachebust_urls(files)
     lines.append(app_dir + "/ps5-autoload/selected_exploit")
     lines.append(pointer_path)

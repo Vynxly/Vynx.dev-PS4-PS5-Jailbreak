@@ -475,7 +475,10 @@
       var probeOk = false;
 
 
-      var AUTOLOADER_URL = '/app/index.html';
+      // Go straight to the cached app after the native shortcut is installed.
+      // The query tells the app that this is the one-time post-install launch:
+      // it sends pldmgr.elf to the ELF loader that just performed the install.
+      var AUTOLOADER_URL = '/app/v[[VERSION_PLACEHOLDER]]/ps5-autoload/index.html?autoload=pldmgr.elf&post-install=1';
 
       function setProgress(pct) {
         progressBar.style.webkitTransform = 'scaleX(' + pct / 100 + ')';
