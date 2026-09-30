@@ -6,8 +6,8 @@ Install the PS5 app once. After that, open **Vynx.dev Autoloader** from your PS5
 
 ## Compatible PS5 firmware
 
-- **1.00–5.50:**
-- **7.00–13.60:**
+- **1.00–5.50**
+- **7.00–13.60**
 
 Firmware **6.xx** and versions not listed above are not supported by this release.
 
