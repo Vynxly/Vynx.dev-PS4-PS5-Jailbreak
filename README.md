@@ -42,14 +42,6 @@ While your console is using this PC as DNS, the host blocks PlayStation/Sony net
 
 For extra protection, also disable automatic system/game update downloads in the console settings. DNS blocking is a strong additional safeguard, but it should not be treated as an absolute guarantee against every possible update path or cached connection.
 
-## Direct browser access
-
-You can also open the host directly at:
-
-```text
-http://YOUR-PC-IP/
-```
-
 ## Troubleshooting
 
 - Allow Python through Windows Firewall for **Private networks** if prompted.
