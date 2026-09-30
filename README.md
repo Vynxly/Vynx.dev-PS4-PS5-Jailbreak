@@ -17,7 +17,7 @@ Choose **one** of these methods. Both install the same app.
 
 ### From vynx.dev <sup><sub>(If you already have Internet Browser installed on your PS5)</sub></sup>
 
-1. On your PS5, open [http://vynx.dev/JB](http://vynx.dev/JB/).
+1. On your PS5 Internet Browser, open [http://vynx.dev/JB](http://vynx.dev/JB/).
 2. Click the large Vynx logo **once** to start the jailbreak and installer.
 3. Keep the page open while it installs. After **Installed successfully**, Payload Manager opens automatically.
 4. **Vynx.dev Autoloader** is also added to your PS5 homescreen for later use.
