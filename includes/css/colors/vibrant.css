@@ -1,0 +1,98 @@
+body {
+    background: radial-gradient(circle at top, #33105e 0%, #170321 28%, #09010f 62%, #040406 100%);
+    background-attachment: fixed;
+}
+
+#initial-screen.compact{
+    background-color: #14061f !important;
+}
+
+#ps-logo-container {
+    background: radial-gradient(circle at 30% 30%, rgba(168, 85, 247, 0.26), rgba(0, 0, 0, 0.16) 65%);
+    border: 1px solid rgba(192, 132, 252, 0.35);
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.25), inset 0 0 22px rgba(255,255,255,0.04);
+}
+
+#ps-logo {
+    width: 8rem;
+    height: 8rem;
+    object-fit: contain;
+    filter: drop-shadow(0 0 16px rgba(168, 85, 247, 0.6));
+}
+
+#vynx-brand-title {
+    font-size: 2.3rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: #ffffff;
+    text-shadow: 0 0 18px rgba(168, 85, 247, 0.32);
+}
+#vynx-brand-subtitle {
+    margin-top: 0.2rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.4rem;
+    color: #c084fc;
+}
+#vynx-brand-tagline {
+    margin-top: 0.15rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.28rem;
+    color: rgba(255,255,255,0.52);
+}
+#click-to-start-text {
+    color: rgba(255,255,255,0.84) !important;
+    text-shadow: 0 0 10px rgba(139, 92, 246, 0.15);
+}
+
+input[type="radio"]:checked { border: none; background: #9333ea; }
+.fwSelected { border-radius: 5px; background-color: #6d28d9; color: white; }
+::-webkit-scrollbar-track { background-color: transparent; }
+::-webkit-scrollbar-thumb { background: #7e22ce; border-radius: 10px; }
+.category-tools { background-color: rgba(168, 85, 247, 0.16); color: #d8b4fe; border: none !important; }
+.category-advanced { background-color: rgba(236, 72, 153, 0.16); color: #f9a8d4; }
+.category-linux { background-color: rgba(124, 58, 237, 0.18); color: #c4b5fd; border: none !important; }
+.bg-gray-900 { background-color: transparent; }
+.bg-gray-800 { background-color: #14061f; }
+.bg-gray-700 { background-color: #241137; }
+.bg-gray-700\/60 { background-color: rgba(36, 17, 55, 0.60); }
+.bg-black\/50 { background-color: rgba(0, 0, 0, 0.58); }
+.bg-white\/5 { background-color: rgba(255, 255, 255, 0.05); }
+.bg-white\/10 { background-color: rgba(255, 255, 255, 0.10); }
+.bg-yellow-600\/20 { background-color: rgba(168, 85, 247, 0.20); }
+.bg-blue-600 { background-color: #7e22ce; }
+.bg-red-600 { background-color: #be185d; }
+.bg-red-700 { background-color: #9d174d; }
+.bg-gray-50 { background-color: #ede9fe; }
+.text-white { color: #ffffff; }
+.text-white\/70 { color: rgba(255, 255, 255, 0.72); }
+.text-white\/80 { color: rgba(255, 255, 255, 0.80); }
+.text-white\/90 { color: rgba(255, 255, 255, 0.90); }
+.text-yellow-200 { color: #e9d5ff; }
+.text-yellow-200\/80 { color: rgba(233, 213, 255, 0.8); }
+.text-gray-600 { color: #6b21a8; }
+.text-blue-500 { color: #c084fc; }
+.border { border-width: 1px; border-style: solid; border-color: currentColor; }
+.border-2 { border-width: 2px; border-style: solid; border-color: currentColor; }
+.border-b { border-bottom-width: 1px; border-bottom-style: solid; }
+.border-white\/20 { border-color: rgba(255, 255, 255, 0.20); }
+.border-blue-500 { border-color: #c084fc; }
+.border-yellow-500\/50 { border-color: rgba(168, 85, 247, 0.5); }
+.border-transparent { border-color: transparent; }
+.border-gray-200 { border-color: #e9d5ff; }
+.border-gray-700 { border-color: #241137; }
+.hover\:bg-gray-700:hover { background-color: #241137; }
+.hover\:text-white:hover { color: #ffffff; }
+.hover\:bg-white\/10:hover { background-color: rgba(255, 255, 255, 0.10); }
+.hover\:bg-blue-700:hover { background-color: #6b21a8; }
+.hover\:text-gray-600:hover { color: #6b21a8; }
+.hover\:border-gray-300:hover { border-color: #e9d5ff; }
+.focus-within\:border-blue-500:focus-within { border-color: #c084fc; }
+.focus\:ring-2:focus { box-shadow: 0 0 0 2px #c084fc; }
+.focus\:ring-blue-400:focus { box-shadow: 0 0 0 2px #c084fc; }
+.accent-blue-500 { accent-color: #a855f7; }
+.tabs ul { border-color: #241137; }
+.tabs button { border-color: transparent; color: rgba(255, 255, 255, 0.85); }
+.tabs button[aria-selected="true"] { border-color: #c084fc; color: #c084fc; border-bottom: 1px solid #c084fc; }
+.tabs button:not([aria-selected="true"]):hover { color: #e9d5ff; border-color: #e9d5ff; }
+button { background-color: transparent; border: none; }
