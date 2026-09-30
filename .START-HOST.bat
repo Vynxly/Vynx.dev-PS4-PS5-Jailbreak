@@ -1,44 +1,53 @@
 @echo off
+setlocal EnableExtensions
 title Vynx.dev Jailbreak
 cd /d "%~dp0"
 
-set "PORT=8080"
-set "IP="
+set "PYTHON_CMD="
+where py >nul 2>nul
+if not errorlevel 1 set "PYTHON_CMD=py -3"
 
-REM Automatically grab the local 192.168.x.x address
-for /f "tokens=2 delims=:" %%A in ('ipconfig ^| findstr /i "IPv4" ^| findstr "192.168."') do (
-    set "IP=%%A"
+if not defined PYTHON_CMD (
+    where python >nul 2>nul
+    if not errorlevel 1 set "PYTHON_CMD=python"
 )
 
-REM Remove spaces
-set "IP=%IP: =%"
-
-echo.
-echo ========================================
-echo           Vynx.dev Jailbreak
-echo ========================================
-echo.
-
-if not defined IP (
-    echo ERROR: Could not detect your LAN IPv4 address.
+if not defined PYTHON_CMD (
+    cls
     echo.
-    ipconfig | findstr /i "IPv4"
+    echo ============================================
+    echo          Vynx.dev Jailbreak - ERROR
+    echo ============================================
+    echo.
+    echo Python 3 is required.
+    echo Download it from: https://www.python.org/downloads/
     echo.
     pause
-    exit /b
+    exit /b 1
 )
 
-echo PC IP: %IP%
+cls
 echo.
-echo On your console open:
+echo ============================================
+echo             Vynx.dev Jailbreak
+echo ============================================
 echo.
-echo     http://%IP%:%PORT%
+echo             Starting...
 echo.
-echo ========================================
-echo Press CTRL+C to stop the server.
-echo ========================================
+echo     Setting up the local jailbreak host.
+echo             Please wait.
 echo.
 
-py -3 -m http.server %PORT% --bind 0.0.0.0
+%PYTHON_CMD% "%~dp0local_host.py"
+set "HOST_EXIT=%ERRORLEVEL%"
 
-pause
+if not "%HOST_EXIT%"=="0" (
+    echo.
+    echo The host could not start.
+    echo Try right-clicking .START-HOST.bat and choosing
+    echo "Run as administrator", then try again.
+    echo.
+    pause
+)
+
+exit /b %HOST_EXIT%

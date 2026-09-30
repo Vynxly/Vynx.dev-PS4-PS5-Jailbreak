@@ -1,98 +1,87 @@
-# Vynx Jailbreak Webkit
+# Vynx Jailbreak WebKit
 
-A simple PS4 / PS5 WebKit exploit host that can be hosted directly from your PC on your local network.
+A simple local PS4 / PS5 WebKit host with **User Guide redirect** and **PSN/update blocking** built in.
 
-## Local Hosting
-
-### Requirements
+## What you need
 
 - Windows PC
 - Python 3
-- Your PC and PlayStation connected to the same network
+- PC and PlayStation on the same network
 
-You can check whether Python is installed by opening Command Prompt and running:
+Install Python from <https://www.python.org/downloads/> if you do not already have it.
 
-```cmd
-py -3 --version
-```
+## Start it
 
-If Python is not installed, download Python 3 from:
-
-https://www.python.org/downloads/
-
-Make sure Python is added to your PATH during installation.
-
-## Starting the WebKit Host
-
-1. Download or clone this repository.
-
-2. Extract the files if necessary.
-
-3. Double-click:
-
-```text
-.START-HOST.bat
-```
-
-4. A Command Prompt window will open and display an address similar to:
-
-```text
-http://192.168.1.100:8080
-```
-
-5. On your PS4 or PS5, open the web browser / User's Guide and navigate to the address shown.
-
-For example:
-
-```text
-http://192.168.1.100:8080
-```
-
-Keep the Command Prompt window open while using the host.
-
-To stop the server, press:
-
-```text
-CTRL+C
-```
-
-## Manual Hosting
-
-If the included batch file does not work, open Command Prompt inside the WebKit folder and run:
-
-```cmd
-py -3 -m http.server 8080 --bind 0.0.0.0
-```
-
-Find your PC's local IP with:
-
-```cmd
-ipconfig
-```
-
-Look for your IPv4 address, then open the following on your PlayStation:
-
-```text
-http://YOUR-PC-IP:8080
-```
+1. Extract the release.
+2. Double-click `.START-HOST.bat`.
+3. The window will show your PC's DNS address.
+4. On your PS4 / PS5, set **both Primary DNS and Secondary DNS** to that address.
+5. Open **Settings -> User's Guide**.
 
 Example:
 
 ```text
-http://192.168.1.100:8080
+Vynx.dev Jailbreak - READY
+
+Set your PS4 / PS5 DNS to:
+
+             192.168.1.100
+
+Then open:
+Settings -> User's Guide
+
+Keep this window open.
+Press CTRL+C to stop.
+```
+
+Keep the host window open while using the console.
+
+### PS5
+
+If the User Guide shows a certificate warning, accept it to continue to the local host.
+
+## Update / PSN protection
+
+While your console is using this PC as DNS, the host blocks PlayStation/Sony network domains used by PSN, system updates, title-update metadata, and telemetry. The local User Guide address is allowed and redirected back to your PC.
+
+**Do not set a public Secondary DNS such as `8.8.8.8` or `1.1.1.1`.** That can bypass the local blocking if the console uses the secondary server.
+
+For extra protection, also disable automatic system/game update downloads in the console settings. DNS blocking is a strong additional safeguard, but it should not be treated as an absolute guarantee against every possible update path or cached connection.
+
+## Direct browser access
+
+You can also open the host directly at:
+
+```text
+http://YOUR-PC-IP/
 ```
 
 ## Troubleshooting
 
-If the page does not load:
+- Allow Python through Windows Firewall for **Private networks** if prompted.
+- Keep `.START-HOST.bat` open while the console is using this DNS.
+- If the host cannot start, right-click `.START-HOST.bat` and choose **Run as administrator**.
+- If your PC has multiple network adapters and the wrong address is detected, run:
 
-- Make sure the PC and PlayStation are on the same network.
-- Allow Python through Windows Firewall if prompted.
-- Make sure port `8080` is not being used by another program.
-- Do not close the server window while using the WebKit.
-- Use your PC's local IPv4 address, not `localhost` or `127.0.0.1`.
+```cmd
+py -3 local_host.py --ip YOUR-PC-IP
+```
+
+### Advanced / debugging
+
+Normal request logs are hidden to keep the launcher clean. To show DNS and web requests:
+
+```cmd
+py -3 local_host.py --verbose
+```
+
+To temporarily disable PSN blocking for testing:
+
+```cmd
+py -3 local_host.py --allow-psn
+```
 
 ---
 
 **Vynx Developments**  
-https://vynx.dev
+<https://vynx.dev>
