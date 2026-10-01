@@ -321,6 +321,7 @@ async function main(userlandRW) {
   if (result.payloads) {
     log("kernel exploit complete", "info");
     log("elfldr is listening on port 9021", "info");
+    log("PLEASE WAIT... DO NOT CLOSE.", "info");
     if (AUTOLOAD) {
       await startAutoload(p, chain);
     } else {
