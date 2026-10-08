@@ -2098,7 +2098,8 @@ async function runLadder() {
         + "-triggered=" + (engine && engine.triggered ? 1 : 0)
         + "-rtmean=" + rtMean + "-filtered=" + (FILTERED_RUN ? 1 : 0));
 
-    const payloadSuccess = cfg.payload === "1" && elfldrSpawned;
+    const payloadSuccess = cfg.payload === "1" && elfldrSpawned && !chainDead
+        && engine && engine.S.aliasesRepaired && engine.S.groupsStillLive.length === 0;
     const fullSuccess = payloadSuccess || (failed === 0 && !aborted
         && !FILTERED_RUN && !chainDead && !state.cleanupFailed);
 
@@ -2191,6 +2192,9 @@ async function runLadder() {
             "no-navigation-parked-racers-and-fds-remain-owned-port=9021");
         if (!payloadMenuEl.classList.contains("on")) showPayloadMenu();
         startAutoload();
+    } else if (cfg.autoload && elfldrSpawned) {
+        try { window.parent.postMessage({ type: "wkal", kind: "autoload", ok: false,
+            why: "Poops cleanup did not confirm racer exit; reboot before retrying" }, "*"); } catch (e) { }
     }
 }
 
@@ -2637,9 +2641,12 @@ function lastRunText() {
         await refreshConsoleNetworkInfo();
         if (await probeExistingElfLoader()) {
             if (cfg.autoload) {
-                screenLine("[+] ELF loader already running; sending " + cfg.autoload);
-                stage("sending " + cfg.autoload + " to the existing ELF loader", "ok");
-                await startAutoload();
+                const why = "Already jailbroken.";
+                screenLine("[-] " + why);
+                stage(why, "bad");
+                try {
+                    window.parent.postMessage({ type: "wkal", kind: "autoload", ok: false, why: why }, "*");
+                } catch (e) { }
             } else {
                 openExistingPayloadMenu();
             }

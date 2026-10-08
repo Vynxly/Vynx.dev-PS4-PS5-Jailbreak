@@ -1,4 +1,4 @@
-# Vynx.dev Autoloader v2.0
+# Vynx.dev Autoloader v2.1
 
 > **PS4 users:** The Vynx jailbreak website still supports PS4 and can be accessed by going to http://vynx.dev/JB on the PS4 internet browser. This Autoloader download and homescreen app are for PS5 only.
 > 

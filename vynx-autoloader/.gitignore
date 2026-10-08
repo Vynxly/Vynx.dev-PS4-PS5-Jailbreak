@@ -7,5 +7,6 @@ assets/param.json
 vynx-autoloader-installer*.elf
 vynx-autoloader-host*.py
 release/
+release-v*/
 previous-v2.0/
 __pycache__/

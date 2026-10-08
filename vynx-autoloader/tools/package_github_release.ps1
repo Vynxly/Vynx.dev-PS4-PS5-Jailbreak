@@ -1,5 +1,6 @@
 param(
   [string]$OutputPath,
+  [string]$ReleaseDirectory,
   [switch]$Force
 )
 
@@ -7,7 +8,18 @@ $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 
 $repo = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-$release = [System.IO.Path]::GetFullPath((Join-Path $repo 'release'))
+$baseVersion = [regex]::Match(
+  [System.IO.File]::ReadAllText((Join-Path $repo 'include/vynx.h')),
+  '#define\s+VYNX_VERSION\s+"([^"]+)"'
+).Groups[1].Value
+$versionedRelease = Join-Path $repo "release-v$baseVersion"
+$release = if ($ReleaseDirectory) {
+  [System.IO.Path]::GetFullPath($ReleaseDirectory)
+} elseif (Test-Path -LiteralPath $versionedRelease -PathType Container) {
+  [System.IO.Path]::GetFullPath($versionedRelease)
+} else {
+  [System.IO.Path]::GetFullPath((Join-Path $repo 'release'))
+}
 $hostFiles = @(Get-ChildItem -LiteralPath $release -File -Filter 'vynx-autoloader-host_v*.py')
 if ($hostFiles.Count -ne 1) {
   throw "Expected one versioned host script in '$release'; found $($hostFiles.Count). Run build_release.sh first."

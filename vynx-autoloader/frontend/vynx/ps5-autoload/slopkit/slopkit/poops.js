@@ -6278,8 +6278,8 @@ export function makePoopsEngine(X) {
           " descriptor(s) left open until reboot",
       );
       rep.notes.push(
-        "9.00 safety gate: racer termination and descriptor teardown skipped " +
-          "after kernel writes; do not close or reload the page, reboot instead",
+        "Post-kernel safety hold: descriptor teardown skipped; racer exit " +
+          "requires certified alias repair. Reboot before running again",
       );
       state.cleanupFailed =
         (state.cleanupFailed ? state.cleanupFailed + "  " : "") +
@@ -6293,6 +6293,36 @@ export function makePoopsEngine(X) {
           "-fds=" + parkedFds.length +
           "-action=reboot",
       );
+      // srbraboo KP fix: repaired aliases permit racer exit, but not FD teardown.
+      if (S.aliasesRepaired) {
+        flushMark("POOPS-CLEANUP-RACERS-PRE", "aliasesRepaired=1");
+        const liveNames = [];
+        for (const g of [S.iovGroup, S.uioReadGroup, S.uioWriteGroup]) {
+          if (!g || !g.spawned || !g.spawned.length) continue;
+          try {
+            const ub = await unblockGroup(g);
+            forceSettled(g, "post-jailbreak");
+            const tr = await H.terminate(g, "post-jailbreak");
+            const notExited = g.spawned.filter(
+              (t) => g.S.get("status", t.jbWid) !== TK.ST_EXITED,
+            ).length;
+            const live = (tr.exitedMs !== undefined && tr.exitedMs < 0)
+              || notExited > 0;
+            if (live) liveNames.push(g.name);
+            rep.groups.push(g.name + ": post-jailbreak terminate -- "
+              + (live ? "exit unconfirmed" : "exit confirmed")
+              + ", unblock rounds=" + ub.rounds);
+          } catch (err) {
+            liveNames.push(g.name);
+            rep.groups.push(g.name + ": post-jailbreak terminate failed -- "
+              + String((err && err.message) || err).slice(0, 120));
+          }
+        }
+        S.groupsStillLive = liveNames.slice();
+        rep.groupsLive = liveNames.slice();
+        flushMark("POOPS-CLEANUP-RACERS-DONE",
+          "live=" + (liveNames.join(".") || "none"));
+      }
       return rep;
     }
 

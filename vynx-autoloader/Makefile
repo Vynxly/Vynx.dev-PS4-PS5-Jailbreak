@@ -1,6 +1,7 @@
 # Vynx.dev Autoloader native PS5 installer
 
 PYTHON ?= python3
+NODE   ?= node
 CC     := /opt/ps5-payload-sdk/bin/prospero-clang
 STRIP  := /opt/ps5-payload-sdk/bin/prospero-strip
 
@@ -82,6 +83,11 @@ $(HOST): $(FRONTEND_FILES) version $(HOST_PAYLOAD)
 		--output $(HOST) --payload $(HOST_PAYLOAD)
 
 host: $(HOST)
+
+.PHONY: test
+test:
+	"$(NODE)" tools/test_stability.js
+	$(PYTHON) tools/check_exploit_js.py frontend/vynx/ps5-autoload/slopkit frontend/vynx/ps5-autoload/relapse
 
 clean:
 	rm -rf $(FRONTEND_STAGE)

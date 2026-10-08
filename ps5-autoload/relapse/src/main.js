@@ -321,6 +321,7 @@ async function main(userlandRW) {
   if (result.payloads) {
     log("kernel exploit complete", "info");
     log("elfldr is listening on port 9021", "info");
+    log("PLEASE WAIT... DO NOT CLOSE.", "info");
     if (AUTOLOAD) {
       await startAutoload(p, chain);
     } else {
@@ -352,4 +353,5 @@ document.body.appendChild(fwScript);
    manifest and the offsets script would 404 the moment the console goes off
    the network. The app is already served from a version-keyed directory, so
    the plain URL is unique per build. */
-fwScript.setAttribute("src", "offsets/" + window.fw_str + ".js");
+fwScript.setAttribute("src", "offsets/" +
+  (window.firmware.profile ? window.firmware.profile.offsets : window.fw_str) + ".js");

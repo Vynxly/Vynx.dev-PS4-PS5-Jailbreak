@@ -31,6 +31,14 @@ This component preserves the Vynx frontend and combines it with selected code an
 - Reused through the v0.5.1 autoload patch for supported 7.00–12.00 firmware and the Poops-only 9.05/11.40 cases.
 - The pinned tree does not contain a standalone license file; its original credits are preserved in the vendored files and here.
 
+## Stability backports (v2.1)
+
+- Poops racer termination: [srbraboo v0.5.2-kp-fix](https://github.com/srbraboo/ps5-webkit-autoloader/releases/tag/v0.5.2-kp-fix), commit `900b800`, originally `048c5ec`. After certified alias repair, unblock and terminate the iov/uio race groups while retaining the post-kernel descriptor safety hold. Vynx additionally checks every worker's exit status and preserves unconfirmed groups in diagnostics.
+- Relapse settling and pipe behavior: [itsPLK ps5-webkit-remote-loader](https://github.com/itsPLK/ps5-webkit-remote-loader), pinned commit `09eca89a3115a266297aaa73bd9f5fcb27300a01`, used by WebKit Autoloader v0.6.1. Wait 1000 ms after parking AIO workers, wait 100 ms between AIO cleanup entries, and create the kernel-access pipes with `O_NONBLOCK`.
+- The v0.6.1 Poops offsets for 9.05, 11.40, and 11.60 were already present in the Vynx vendored offset tables and are retained.
+- These are selective runtime backports. Vynx retains its installer, iframe runtime, branding, and umtx2 support for firmware 1.00-5.50; it does not adopt upstream v0.6's replacement architecture or removal of lower-firmware support.
+- The KP fork is an experimental prerelease. Offline checks verify integration and failure handling; reduced kernel-panic frequency requires testing on a PS5.
+
 ## umtx2
 
 - Source: `https://github.com/idlesauce/umtx2`

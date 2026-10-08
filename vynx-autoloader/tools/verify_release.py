@@ -7,8 +7,10 @@ import hashlib
 import importlib.util
 import io
 import pathlib
+import re
 import sys
 import zipfile
+import zlib
 
 
 def sha256(data):
@@ -21,10 +23,12 @@ def fail(message):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--version", default="2.0")
+    parser.add_argument("--version", default="2.1")
     parser.add_argument("--host", required=True, type=pathlib.Path)
     parser.add_argument("--elf", required=True, type=pathlib.Path)
     parser.add_argument("--dist", required=True, type=pathlib.Path)
+    parser.add_argument("--site-zip", type=pathlib.Path,
+                        help="Export the verified embedded website archive.")
     args = parser.parse_args()
 
     host_source = args.host.read_text(encoding="utf-8")
@@ -38,6 +42,9 @@ def main():
 
     archive = base64.b64decode(module.EMBEDDED_ZIP_B64, validate=True)
     elf = args.elf.read_bytes()
+    app_dir = args.dist / "app" / ("v" + args.version)
+    registry = (pathlib.Path(__file__).resolve().parent.parent /
+                "include" / "file_registry.c").read_text(encoding="utf-8")
     with zipfile.ZipFile(io.BytesIO(archive)) as zf:
         names = set(zf.namelist())
         required = {
@@ -62,7 +69,31 @@ def main():
         if any(token in checked for token in unresolved):
             fail("host archive contains unresolved build placeholders")
 
-    app_dir = args.dist / "app" / ("v" + args.version)
+        for relative in (
+            "ps5-autoload/slopkit/slopkit/poops.js",
+            "ps5-autoload/slopkit/slopkit/poops.html",
+            "ps5-autoload/relapse/src/relapse_exploit.js",
+        ):
+            staged_source = (app_dir / relative).read_bytes()
+            original = (pathlib.Path(__file__).resolve().parent.parent /
+                        "frontend" / "vynx" / relative).read_bytes()
+            if zf.read(relative) != staged_source or staged_source != original:
+                fail("host/staged stability source mismatch: " + relative)
+            registry_path = f"/app/v{args.version}/{relative}"
+            entry = re.search(r'\{ "' + re.escape(registry_path) +
+                              r'", (file_\d+), \d+, \d+, ([01]),', registry)
+            if not entry:
+                fail("registry is missing the stability source: " + relative)
+            array = re.search(r"static const unsigned char " + entry.group(1) +
+                              r"\[\] = \{([^}]+)\};", registry)
+            if not array:
+                fail("registry is missing the source array: " + relative)
+            stored = bytes(int(value, 16) for value in
+                           re.findall(r"0x([0-9a-f]{2})", array.group(1)))
+            decoded = zlib.decompress(stored, -15) if entry.group(2) == "1" else stored
+            if decoded != staged_source or stored not in elf:
+                fail("installer ELF is missing the stability source: " + relative)
+
     marker = app_dir / "__complete__"
     manifest_path = args.dist / "cache.appcache"
     pointer = args.dist / "app" / "index.html"
@@ -93,6 +124,9 @@ def main():
     print(f"  host archive: {len(names)} files")
     print(f"  installer ELF SHA-256: {sha256(elf)}")
     print(f"  host script SHA-256:   {sha256(args.host.read_bytes())}")
+    if args.site_zip:
+        args.site_zip.write_bytes(archive)
+        print(f"  verified website archive: {args.site_zip}")
 
 
 if __name__ == "__main__":

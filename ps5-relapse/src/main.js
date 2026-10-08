@@ -281,6 +281,7 @@ async function main(userlandRW) {
   if (result.payloads) {
     log("kernel exploit complete", "info");
     log("elfldr is listening on port 9021", "info");
+    log("PLEASE WAIT... DO NOT CLOSE.", "info");
     watchR2(async () => {
       try {
         const { loadOptionalPayloads } = await import("./kexp.js");
@@ -297,4 +298,4 @@ async function main(userlandRW) {
 const fwScript = document.createElement("script");
 document.body.appendChild(fwScript);
 
-fwScript.setAttribute("src", `offsets/${window.fw_str}.js?v=` + Date.now());
+fwScript.setAttribute("src", `offsets/${window.firmware.profile.offsets}.js?v=` + Date.now());
