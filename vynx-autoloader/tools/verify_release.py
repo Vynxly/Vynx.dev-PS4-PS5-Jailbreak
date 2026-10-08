@@ -73,12 +73,16 @@ def main():
             "ps5-autoload/slopkit/slopkit/poops.js",
             "ps5-autoload/slopkit/slopkit/poops.html",
             "ps5-autoload/relapse/src/relapse_exploit.js",
+            "ps5-autoload/relapse/src/main.js",
+            "ps5-relapse/src/main.js",
         ):
             staged_source = (app_dir / relative).read_bytes()
             original = (pathlib.Path(__file__).resolve().parent.parent /
                         "frontend" / "vynx" / relative).read_bytes()
             if zf.read(relative) != staged_source or staged_source != original:
                 fail("host/staged stability source mismatch: " + relative)
+            if relative.endswith("/main.js") and b'log("PLEASE WAIT... DO NOT CLOSE.", "info");' not in staged_source:
+                fail("release is missing the wait message: " + relative)
             registry_path = f"/app/v{args.version}/{relative}"
             entry = re.search(r'\{ "' + re.escape(registry_path) +
                               r'", (file_\d+), \d+, \d+, ([01]),', registry)
