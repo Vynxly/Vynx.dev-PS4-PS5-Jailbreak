@@ -4,13 +4,22 @@
 > 
 Install the PS5 app once. After that, open **Vynx.dev Autoloader** from your PS5 homescreen whenever you want to run the jailbreak. The app starts it automatically.
 
+## Compatible PS5 firmware
+
+- **1.00–5.50**
+- **7.00–13.60**
+
+Firmware **6.xx** and versions not listed above are not supported by this release.
+
+**Network requirement:** When using Relapse (the default jailbreak on firmware 7.00–13.60), the PS5 must stay connected to Wi‑Fi or Ethernet so it has a local network address. Internet access isn’t required; you can disconnect your router from the internet while keeping the local network active.
+
 ## Install the app
 
 Choose **one** of these methods. Both install the same app.
 
-### From vynx.dev
+### From vynx.dev <sup><sub>(If you already have Internet Browser installed on your PS5)</sub></sup>
 
-1. On your PS5, open [http://vynx.dev/JB](http://vynx.dev/JB/).
+1. On your PS5 Internet Browser, open [http://vynx.dev/JB](http://vynx.dev/JB/).
 2. Click the large Vynx logo **once** to start the jailbreak and installer.
 3. Keep the page open while it installs. After **Installed successfully**, Payload Manager opens automatically.
 4. **Vynx.dev Autoloader** is also added to your PS5 homescreen for later use.
@@ -35,6 +44,7 @@ On the first website visit, the logo click runs the **installer**, then opens Pa
 
 ## If you get stuck
 
+- If it's frozen on 'checking AIO groups', restart your console and try again.
 - If the page says your firmware is unsupported, this release does not support your exact PS5 version.
 - If the jailbreak fails or the browser closes, restart the PS5 and try again.
 - If installation stops while caching, keep the page or PC host open and retry the install.
