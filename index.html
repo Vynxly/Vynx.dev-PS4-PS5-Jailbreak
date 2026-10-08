@@ -29,13 +29,6 @@
     <link rel="stylesheet" id="main-stylesheet" href="">
     <link rel="stylesheet" id="color-stylesheet" href="">
     <script>
-        // Immediately redirect PS4 from HTTPS to HTTP before loading DOM or scripts
-        if (window.location.protocol === 'https:' &&
-            window.location.hostname === 'webkitty.arabpixel.net' &&
-            navigator.userAgent.indexOf('PlayStation 4') !== -1) {
-            window.abortLoading = true;
-            window.location.replace(window.location.href.replace(/^https:/, 'http:'));
-        }
 
         // Prevent "Theme Flash" by applying the href before the body renders
         var savedTheme = localStorage.getItem('theme') || "index";
@@ -121,13 +114,6 @@
 
             <!-- Compatibility message -->
             <p id="PS4FW" class="text-white/70 text-lg mt-4 mb-6">-</p>
-            <a hidden
-                class="secondHostBtn bg-blue-600 hover:bg-blue-700 p-3 rounded font-semibold disabled:opacity-50 transition-colors text-white text-center"
-                href="http://webkitty.arabpixel.net/" style="text-decoration: none;">
-                <button
-                    class="bg-blue-600 hover:bg-blue-700 p-3 rounded font-semibold disabled:opacity-50 transition-colors text-white text-center">Load
-                    payloads using GoldHEN's PayLoader - External link</button>
-            </a>
 
             <!-- Jailbreak flavor options -->
             <div id="choosejb-initial" class="bg-gray-800 p-6 rounded-lg shadow-xl w-full max-w-sm text-center">
@@ -361,13 +347,6 @@
                             </div>
                         </div>
                     </div>
-                    <a hidden
-                        class="secondHostBtn w-full bg-blue-600 hover:bg-blue-700 p-3 rounded font-semibold disabled:opacity-50 transition-colors text-white text-center"
-                        href="http://webkitty.arabpixel.net/" style="text-decoration: none;">
-                        <button
-                            class="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded font-semibold disabled:opacity-50 transition-colors text-white text-center">Load
-                            payloads using GoldHEN's PayLoader - External link</button>
-                    </a>
                 </div>
             </div>
         </section>
@@ -398,8 +377,8 @@
                 </div>
             </div>
             <div id="PS5FWOK" class="mt-4">
-                <h3 class="text-l font-bold mb-2">Supported PS5 Autoloader firmware</h3>
-                <p class="text-sm text-white/70 mb-4">7.00–13.60 on the firmware versions included with Relapse.</p>
+                <h3 class="text-l font-bold mb-2">Supported PS5 firmware</h3>
+                <p class="text-sm text-white/70 mb-4">1.00–5.50 through umtx2 and 7.00–13.60 through Poops/Relapse, using the exact supported versions bundled with the runner.</p>
             </div>
             <small id="goldhenFirmwareSemiSupported">
                 <i class="text-white/70">* Loading payloads through GoldHEN's PayLoader is supported on PS4.</i>

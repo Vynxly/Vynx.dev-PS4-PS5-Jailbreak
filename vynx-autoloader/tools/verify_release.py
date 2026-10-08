@@ -29,6 +29,10 @@ def main():
     parser.add_argument("--dist", required=True, type=pathlib.Path)
     parser.add_argument("--site-zip", type=pathlib.Path,
                         help="Export the verified embedded website archive.")
+    parser.add_argument("--website-dir", type=pathlib.Path,
+                        help="Verify every released file in the website upload folder.")
+    parser.add_argument("--github-dir", type=pathlib.Path,
+                        help="Verify every released website file in the GitHub repository.")
     args = parser.parse_args()
 
     host_source = args.host.read_text(encoding="utf-8")
@@ -68,6 +72,16 @@ def main():
                    zf.read("ps5-autoload/app.js"))
         if any(token in checked for token in unresolved):
             fail("host archive contains unresolved build placeholders")
+
+        for directory in (args.website_dir, args.github_dir):
+            if directory is None:
+                continue
+            for relative in sorted(names):
+                if relative.endswith("/"):
+                    continue
+                target = directory / relative
+                if not target.is_file() or target.read_bytes() != zf.read(relative):
+                    fail(f"website copy differs from release: {target}")
 
         for relative in (
             "ps5-autoload/slopkit/slopkit/poops.js",
@@ -126,6 +140,9 @@ def main():
 
     print(f"OK: Vynx.dev Autoloader v{args.version}")
     print(f"  host archive: {len(names)} files")
+    for directory in (args.website_dir, args.github_dir):
+        if directory is not None:
+            print(f"  matching website copy: {directory}")
     print(f"  installer ELF SHA-256: {sha256(elf)}")
     print(f"  host script SHA-256:   {sha256(args.host.read_bytes())}")
     if args.site_zip:

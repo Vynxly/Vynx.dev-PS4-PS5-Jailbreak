@@ -298,4 +298,6 @@ async function main(userlandRW) {
 const fwScript = document.createElement("script");
 document.body.appendChild(fwScript);
 
-fwScript.setAttribute("src", `offsets/${window.firmware.profile.offsets}.js?v=` + Date.now());
+// Stable relative URL: AppCache matches complete URLs, so per-load cache busting
+// prevents the firmware offsets from resolving while offline.
+fwScript.setAttribute("src", "offsets/" + window.fw_str + ".js");

@@ -76,7 +76,7 @@ function applyLanguage(lang) {
         if (!ps5Fw) {
             ui.ps4FwStatus.textContent = "PS5 firmware could not be detected";
         } else if (typeof isPs5AutoloaderSupportedFirmware === "function" && isPs5AutoloaderSupportedFirmware(ps5Fw)) {
-            ui.ps4FwStatus.textContent = `PS5 FW ${ps5Fw} | Autoloader supported`;
+            ui.ps4FwStatus.textContent = `PS5 FW ${ps5Fw} | Relapse supported`;
         } else {
             ui.ps4FwStatus.textContent = `PS5 FW ${ps5Fw} | Autoloader not supported`;
         }

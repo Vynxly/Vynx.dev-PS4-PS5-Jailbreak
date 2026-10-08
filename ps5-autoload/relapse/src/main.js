@@ -308,9 +308,12 @@ async function main(userlandRW) {
   const { p, chain } = await prepareRop(userlandRW);
   const { isElfldrListening } = await import("./kexp.js");
   if (await isElfldrListening(p, chain)) {
-    const why = "Already jailbroken.";
-    log(why, "error");
-    if (AUTOLOAD) reportAutoload(false, { why: why });
+    if (AUTOLOAD) {
+      log("elfldr is already running; sending " + AUTOLOAD, "info");
+      await startAutoload(p, chain);
+    } else {
+      log("Already jailbroken.", "error");
+    }
     return;
   }
   const { runKernelExploit } = await import("./relapse_exploit.js");
@@ -353,5 +356,4 @@ document.body.appendChild(fwScript);
    manifest and the offsets script would 404 the moment the console goes off
    the network. The app is already served from a version-keyed directory, so
    the plain URL is unique per build. */
-fwScript.setAttribute("src", "offsets/" +
-  (window.firmware.profile ? window.firmware.profile.offsets : window.fw_str) + ".js");
+fwScript.setAttribute("src", "offsets/" + window.fw_str + ".js");
