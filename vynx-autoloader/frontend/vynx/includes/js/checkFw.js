@@ -29,7 +29,10 @@ function getPs5FwVersion(ua) {
 }
 
 function isPs5AutoloaderSupportedFirmware(fwVersion) {
-    return ps5AutoloaderSupportedFirmware.indexOf(String(fwVersion || "")) !== -1;
+    var version = String(fwVersion || "");
+    var numeric = parseFloat(version);
+    return ps5AutoloaderSupportedFirmware.indexOf(version) !== -1 ||
+        (!isNaN(numeric) && numeric >= 6.00 && numeric <= 13.60);
 }
 
 // Hide GoldHEN radio when its unsupported

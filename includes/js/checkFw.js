@@ -15,9 +15,9 @@ var ps5AutoloaderSupportedFirmware = [
     "5.00", "5.02", "5.10", "5.50",
     "13.60", "13.42", "13.40", "13.20", "13.00",
     "12.70", "12.60", "12.40", "12.20", "12.02", "12.00",
-    "11.60", "11.40", "11.20", "11.00",
+    "11.60", "11.20", "11.00",
     "10.60", "10.40", "10.20", "10.01", "10.00",
-    "9.60", "9.40", "9.20", "9.05", "9.00",
+    "9.60", "9.40", "9.20", "9.00",
     "8.60", "8.40", "8.20", "8.00",
     "7.61", "7.60", "7.40", "7.20", "7.01", "7.00"
 ];
@@ -29,7 +29,10 @@ function getPs5FwVersion(ua) {
 }
 
 function isPs5AutoloaderSupportedFirmware(fwVersion) {
-    return ps5AutoloaderSupportedFirmware.indexOf(String(fwVersion || "")) !== -1;
+    var version = String(fwVersion || "");
+    var numeric = parseFloat(version);
+    return ps5AutoloaderSupportedFirmware.indexOf(version) !== -1 ||
+        (!isNaN(numeric) && numeric >= 6.00 && numeric <= 13.60);
 }
 
 // Hide GoldHEN radio when its unsupported
@@ -130,7 +133,7 @@ function CheckFW() {
         user.ps5Fw = ps5FwVersion;
         user.ip = "127.0.0.1";
 
-        var supportedPs5 = isPs5AutoloaderSupportedFirmware(ps5FwVersion);
+        var supportedPs5 = isPs5RelapseSupportedFirmware(ps5FwVersion);
         ui.ps4FwStatus.style.color = supportedPs5 ? 'green' : 'orange';
         ui.ps4FwStatus.style.textAlign = "center";
 

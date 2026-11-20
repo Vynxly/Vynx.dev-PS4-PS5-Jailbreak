@@ -95,8 +95,7 @@ async function jailbreak() {
       return;
     }
 
-    // A click on the Vynx logo (or the explicit jailbreak button) starts the
-    // compatibility runner. Public page loads themselves never auto-start it.
+    // Run the PS5 exploit in its minimal local page for maximum WebKit stability.
     sessionStorage.removeItem('jailbreakNow');
     sessionStorage.removeItem('payload_path');
     window.location.href = "./ps5-autoload/index.html";

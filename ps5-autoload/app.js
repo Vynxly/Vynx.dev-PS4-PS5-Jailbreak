@@ -23,12 +23,12 @@
   var mirrorTimer = 0;
 
   /* Build-time exploit override: "auto" (firmware table), "umtx2" (FW
-     1.00-5.50), "poops" (FW 7.00-12.00) or "relapse" (FW 7.00-13.60).
+     1.00-5.50), "wobkot" (FW 6.00-13.60), "poops" or "relapse".
      Replaced by tools/gen_file_registry.py / build_host.py / dev_server.py
      from the FORCE_EXPLOIT env (default "auto"); left as the raw placeholder
      when served straight from source -> auto. A ?force= query on this page
      overrides it at runtime (handy for make dev). */
-  var EXPLOIT_MODE = 'auto';
+  var EXPLOIT_MODE = '[[EXPLOIT_MODE]]';
   if (EXPLOIT_MODE.indexOf('[[') === 0) EXPLOIT_MODE = 'auto';
 
   /* Firmwares supported by each exploit, keyed on the exact UA firmware
@@ -109,19 +109,19 @@
   /* Choose which exploit to arm. Forced modes (build-time EXPLOIT_MODE or a
      ?force= query on this page) bypass the firmware table so a specific chain
      can be exercised on any firmware — the exploit page's own firmware guard
-     still applies. Returns 'umtx2' | 'poops' | 'relapse' | null. */
+     still applies. Returns 'umtx2' | 'wobkot' | 'poops' | 'relapse' | null. */
   function pickExploit() {
     var fw = detectFirmware();
     var forced = null;
     try {
       var q = new URLSearchParams(window.location.search).get('force');
-      if (q === 'umtx2' || q === 'poops' || q === 'relapse') forced = q;
+      if (q === 'umtx2' || q === 'wobkot' || q === 'poops' || q === 'relapse') forced = q;
     } catch (e) { }
     if (forced) {
       uiLog('[force] using ' + forced + ' on firmware ' + (fw ? fw.str : 'unknown'), 'warning');
       return forced;
     }
-    if (EXPLOIT_MODE === 'umtx2' || EXPLOIT_MODE === 'poops' || EXPLOIT_MODE === 'relapse') {
+    if (EXPLOIT_MODE === 'umtx2' || EXPLOIT_MODE === 'wobkot' || EXPLOIT_MODE === 'poops' || EXPLOIT_MODE === 'relapse') {
       uiLog('[force] using ' + EXPLOIT_MODE + ' on firmware ' + (fw ? fw.str : 'unknown'), 'warning');
       return EXPLOIT_MODE;
     }
@@ -130,6 +130,9 @@
       return null;
     }
     if (UMTX2_FIRMWARES.indexOf(fw.str) !== -1) return 'umtx2';
+
+    // Wobkot covers PS5 6.00–13.60 and selects its preferred chain internally.
+    if (fw.num >= 6.00 && fw.num <= 13.60) return 'wobkot';
 
     var hasPoops = POOPS_FIRMWARES.indexOf(fw.str) !== -1;
     var hasRelapse = RELAPSE_FIRMWARES.indexOf(fw.str) !== -1;
@@ -491,6 +494,10 @@
       return;
     }
     exploitMode = picked;
+    if (picked === 'wobkot') {
+      window.location.replace('wobkot/index.html?autoload=' + encodeURIComponent(autoloadName));
+      return;
+    }
     var exploitUrl = picked === 'umtx2' ? UMTX2_URL
       : picked === 'poops' ? POOPS_URL
       : RELAPSE_URL;
