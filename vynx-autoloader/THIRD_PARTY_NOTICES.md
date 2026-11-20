@@ -24,6 +24,14 @@ This component preserves the Vynx frontend and combines it with selected code an
 - License: MIT; full text in `licenses/Relapse-MIT.txt`.
 - The Vynx copy retains the current Vynx styling and uses the v0.5.1 offline/autoload integration: stable offset URLs, shared localhost-only elfldr/kexp, and `?autoload=payload.elf` support.
 
+## Wobkot and v0.8.0-pre autoloader integration
+
+- Wobkot source: `https://github.com/ufm42/wobkot`, commit `84ac4a76021a461270948fba72937767f90ec2f0`.
+- Autoloader source: `https://github.com/itsPLK/ps5-webkit-autoloader`, tag `v0.8.0-pre-627ba8c`.
+- Remote-loader source pinned by that autoloader: `c21446e94c4515b3b84cb4303a8a975f8ddb85de`.
+- License: Wobkot is MIT (see `frontend/vynx/ps5-autoload/wobkot/vendor/wobkot/LICENSE.txt`); the autoloader and remote-loader components are GPL v3 (see `licenses/ps5-webkit-autoloader-GPL-3.0.txt`).
+- Reused: Wobkot userland, Relapse runtime, firmware/network exploit selection, and payload handoff. UMTX2 remains the route for firmware 1.00–5.50.
+
 ## slopkit / Poops
 
 - Source: `https://github.com/itsPLK/slopkit` (upstream credits Egy, Sonic, Yenyen, Zeco, Gezine, Echostretch, Ufm42, TheFloW, John Tornblom, Flatz, Idlesauce, and PS5 R&D Discord).
@@ -51,7 +59,7 @@ This component preserves the Vynx frontend and combines it with selected code an
 - `ps5-autoload/shared/elfldr-ps5.elf`: itsPLK ps5-elfldr `v0.26-bb1e117`, SHA-256 `fa3f0c2b778318000982ada05c01bde70ac875c85e4be6fcc9b5ba836f6d1c3c`; GPL v3 text in `licenses/ps5-elfldr-GPL-3.0.txt`.
 - `ps5-autoload/shared/kexp-ps5.bin`: itsPLK ps5-kexp `v0.8-24cf6e5`, SHA-256 `4e29cb74ffc1771b16e59d4998517aea32ecded651f814b71dc7ee50abff089f`.
 - `ps5-autoload/payloads/payload.elf`: ps5-unified-autoloader v0.1.5, SHA-256 `c8e36ea11b90d695cd20b40b14b8fe76b585a221a6041a7c5af1d4a3efb95b57`; GPL v3 text in `licenses/ps5-unified-autoloader-GPL-3.0.txt`.
-- `ps5-autoload/payloads/pldmgr.elf`: Payload Manager `pldmgr_v0.5.2.elf`, copied from the Vynx Relapse payload set and sent after the one-time app installation; SHA-256 `62b3ba2a4937c2afc502f9a4e7242cca538610ebb4ae2800c7c6f72e7f268e7c`.
+- `ps5-autoload/payloads/pldmgr.elf` and `ps5-relapse/payloads/pldmgr_v0.6.3.elf`: Payload Manager v0.6.3, provided by the user and used by both handoff paths; SHA-256 `2a42054fd9725e1d9595ff4add95abc30e5b49446fcdcb96c06775a376a841c4`.
 
 ## Other retained credits
 
